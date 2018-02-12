@@ -13,9 +13,13 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chalk": "^2.2.0",
+    "@types/cli-spinner": "^0.2.0",
     "@types/commander": "^2.12.2",
     "@types/execa": "^0.8.1",
+    "@types/mkdirp": "^0.5.2",
     "@types/node": "^9.4.5",
+    "cli-spinner": "^0.2.7",
+    "mkdirp": "^0.5.1",
     "tslint": "^5.9.1",
     "typescript": "^2.7.1"
   },
