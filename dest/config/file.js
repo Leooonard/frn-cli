@@ -4,21 +4,21 @@ exports.default = [
     {
         "fileName": "tslint.json",
         "targetPath": "./tslint.json",
-        "sourcePath": "../../tslint.json"
+        "sourcePath": "../../template/tslint.json"
     },
     {
         "fileName": "tsconfig.json",
         "targetPath": "./tsconfig.json",
-        "sourcePath": "../../tsconfig.json"
+        "sourcePath": "../../template/tsconfig.json"
     },
     {
         "fileName": ".babelrc",
         "targetPath": "./.babelrc",
-        "sourcePath": "../../.babelrc"
+        "sourcePath": "../../template/.babelrc"
     },
     {
         "fileName": "commit-config.js",
         "targetPath": "./commit-config.js",
-        "sourcePath": "../../commit-config.js"
+        "sourcePath": "../../template/commit-config.js"
     }
 ];

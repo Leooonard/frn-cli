@@ -13,6 +13,7 @@ const chalk_1 = require("chalk");
 const Execa = require("execa");
 const Command = require("commander");
 const init_1 = require("../services/init");
+const test_1 = require("../services/test");
 main();
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -23,6 +24,14 @@ function main() {
             .description('创建一个新的CRN项目')
             .action((projectName) => {
             init_1.default(projectName);
+        });
+        Command
+            .command('test')
+            .description('内部测试用')
+            .option('-v, --verbose', '展示详细信息')
+            .option('-q, --silent', '隐藏非关键日志')
+            .action((options) => {
+            test_1.default(!!options.verbose, !!options.silent);
         });
         Command.parse(process.argv);
     });

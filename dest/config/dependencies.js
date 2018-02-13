@@ -13,6 +13,6 @@ exports.npmDependenciesConfig = [
 exports.gitDependenciesConfig = [
     {
         dependencyName: 'Flight-GeneralFunction',
-        gitUrl: 'http://git.dev.sh.ctripcorp.com/FlightMobile/Flight-GeneralFunction.git'
+        gitUrl: 'git+http://yiyangyao:AAbbcc123.@git.dev.sh.ctripcorp.com/FlightMobile/Flight-GeneralFunction.git#dev'
     }
 ];

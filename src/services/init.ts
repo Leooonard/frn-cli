@@ -1,11 +1,11 @@
 import * as Execa from 'execa';
 import * as Path from 'path';
 import * as fs from 'fs';
-import Chalk from 'chalk';
-import {
-    Spinner
-} from 'cli-spinner'
 import * as mkdirp from 'mkdirp';
+import {
+    showSpinner,
+    hideSpinner
+} from '../util/spinner';
 import logError from '../util/logError';
 import fileConfig from '../config/file';
 import dirConfig from '../config/dir';
@@ -14,45 +14,42 @@ import {
     gitDependenciesConfig
 } from '../config/dependencies';
 import devDependenciesConfig from '../config/devDependencies';
+import jestConfig from '../config/jest';
+import npmScriptConfig from '../config/npmScript';
+import huskyConfig from '../config/husky';
+import commitizenConfig from '../config/commitizen';
 
 export default async function initProject(projectName: string) {
-    console.log(process.cwd());
-    await Execa('cd', [projectName]);
-    console.log(process.cwd());
-    
-    return;
     await initCrnProject(projectName);
-    copyFiles(projectName);
-    mkdir(projectName);
     enterProject(projectName);
-    installDependencies();
-    installDevDependencies();
+    copyFiles();
+    mkdir();
+    await installDependencies();
+    await installDevDependencies();
+    writeConfigToPackageJson();
 
-}
-
-function createSpinner(text: string): Spinner {
-    const spinner = new Spinner(`${text} %s`);
-    spinner.setSpinnerString('|/-\\');
-    return spinner;
+    console.log('安装成功！');
 }
 
 async function initCrnProject(projectName: string) {
-    const spinner = createSpinner('创建crn项目中...');
+    showSpinner('创建crn项目中');
 
     try {
-        spinner.start();
         await Execa('crn-cli', ['init', projectName]);
-        spinner.stop(true);
+        hideSpinner();
     } catch (e) {
-        spinner.stop(true);
-        logError(e.message);
+        hideSpinner();
+        logError(e);
         process.exit(1);
     }
 }
 
-function copyFiles(projectName: string) {
-    const spinner = createSpinner('拷贝文件中...');
-    spinner.start();
+function enterProject(projectName: string) {
+    process.chdir(Path.resolve(`./${projectName}`));
+}
+
+function copyFiles() {
+    showSpinner('拷贝文件中');
 
     fileConfig.forEach((config) => {
         const {
@@ -62,24 +59,24 @@ function copyFiles(projectName: string) {
         } = config;
 
         try {
-            copyFile(Path.resolve('../config', sourcePath), Path.resolve(process.cwd(), projectName, targetPath));
+            copyFile(Path.resolve(__dirname, '../config', sourcePath), Path.resolve(process.cwd(), targetPath));
             console.log(`拷贝${fileName}成功！`);
         } catch(e) {
-            logError(e.message);
+            hideSpinner();
+            logError(e);
             process.exit(1);
         }
     });
 
-    spinner.stop();
+    hideSpinner();
 }
 
 function copyFile(sourcePath: string, targetPath: string) {
     fs.writeFileSync(targetPath, fs.readFileSync(sourcePath, 'utf8'), 'utf8');
 }
 
-function mkdir(projectName: string) {
-    const spinner = createSpinner('创建目录结构中...');
-    spinner.start();
+function mkdir() {
+    showSpinner('创建目录结构中');
 
     dirConfig.forEach((config) => {
         const {
@@ -88,23 +85,15 @@ function mkdir(projectName: string) {
         } = config;
 
         try {
-            mkdirp.sync(Path.resolve(process.cwd(), projectName, directoryBasePath, directoryName));
+            mkdirp.sync(Path.resolve(process.cwd(), directoryBasePath, directoryName));
         } catch(e) {
-            logError(e.message);
+            hideSpinner();
+            logError(e);
             process.exit(1);
         }
     });
 
-    spinner.stop();
-}
-
-async function enterProject(projectName: string) {
-    try {
-        await Execa('cd', [projectName]);
-    } catch(e) {
-        logError(e.message);
-        process.exit(1);
-    }
+    hideSpinner();
 }
 
 async function installDependencies() {
@@ -121,14 +110,14 @@ async function installDependencies() {
             moduleName = `${dependencyName}@${version}`;
         }
 
-        const spinner = createSpinner(`正在安装npm依赖${dependencyName}...`);
+        showSpinner(`正在安装npm依赖${dependencyName}`);
+
         try {
-            spinner.start();
             await Execa('npm', ['install', '--save', moduleName]);
-            spinner.stop(true);
+            hideSpinner();
         } catch(e) {
-            spinner.stop(true);
-            logError(e.message);
+            hideSpinner();
+            logError(e);
             process.exit(1);
         }
     }
@@ -139,14 +128,14 @@ async function installDependencies() {
             gitUrl
         } = gitDependenciesConfig[i];
 
-        const spinner = createSpinner(`正在安装git依赖${dependencyName}...`);
+        showSpinner(`正在安装git依赖${dependencyName}`);
+
         try {
-            spinner.start();
             await Execa('npm', ['install', '--save', gitUrl]);
-            spinner.stop(true);
+            hideSpinner();
         } catch(e) {
-            spinner.stop(true);
-            logError(e.message);
+            hideSpinner();
+            logError(e);
             process.exit(1);
         }
     }
@@ -158,19 +147,85 @@ async function installDevDependencies() {
             dependencyName
         } = devDependenciesConfig[i];
 
-        const spinner = createSpinner(`正在安装开发依赖${dependencyName}...`);
+        showSpinner(`正在安装开发依赖${dependencyName}`);
+
         try {
-            spinner.start();
             await Execa('npm', ['install', '--save-dev', dependencyName]);
-            spinner.stop();
+            hideSpinner();
         } catch(e) {
-            spinner.stop();
-            logError(e.message);
+            hideSpinner();
+            logError(e);
             process.exit(1);
         }
     }
 }
 
-function writeJestConfigToPackageJson() {
+function writeConfigToPackageJson() {
+    showSpinner(`正在写入配置`);
 
+    writeJestConfigToPackageJson();
+    writeNpmScriptConfigToPackageJson();
+    writeHuskyConfigToPackageJson();
+    writeCommitizenConfigToPackageJson();
+
+    hideSpinner();
+}
+
+function writeJestConfigToPackageJson() {
+    try {
+        const packageJson = readPackageJson();
+        packageJson.jest = jestConfig;
+        writePackageJson(packageJson);
+    } catch(e) {
+        logError(e);
+        process.exit(1);
+    }
+    
+}
+
+function writeNpmScriptConfigToPackageJson() {
+    try {
+        const packageJson = readPackageJson();
+        packageJson.scripts = Object.assign(packageJson.scripts, npmScriptConfig);
+        writePackageJson(packageJson);
+    } catch(e) {
+        logError(e);
+        process.exit(1);
+    }
+}
+
+function writeHuskyConfigToPackageJson() {
+    try {
+        const packageJson = readPackageJson();
+        packageJson.scripts = Object.assign(packageJson.scripts, huskyConfig);
+        writePackageJson(packageJson);
+    } catch(e) {
+        logError(e);
+        process.exit(1);
+    }
+}
+
+function writeCommitizenConfigToPackageJson() {
+    try {
+        const packageJson = readPackageJson();
+        packageJson.config = commitizenConfig;
+        writePackageJson(packageJson);
+    } catch (e) {
+        logError(e);
+        process.exit(1);
+    }
+}
+
+function readPackageJson() {
+    const packageJsonPath = getPackageJsonPath();
+    return JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+}
+
+function writePackageJson(packageJson: object) {
+    const packageJsonPath = getPackageJsonPath();
+    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson), 'utf8');
+}
+
+function getPackageJsonPath() {
+    return Path.resolve(process.cwd(), 'package.json');
 }

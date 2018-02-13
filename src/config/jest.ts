@@ -23,7 +23,6 @@ export default {
         "**/src/**/*.ts"
     ],
     "coveragePathIgnorePatterns": [
-        "/@types/",
         "**/enum.ts",
         "**/interface.ts"
     ],
