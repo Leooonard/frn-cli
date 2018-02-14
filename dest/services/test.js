@@ -16,14 +16,3 @@ function default_1(isVerbose, isSilent) {
     Logger.fatal('fatal');
 }
 exports.default = default_1;
-function getLogLevel(isVerbose, isSilent) {
-    if (isVerbose) {
-        return Logger.ELogLevel.verbose;
-    }
-    else if (isSilent) {
-        return Logger.ELogLevel.silent;
-    }
-    else {
-        return Logger.ELogLevel.default;
-    }
-}

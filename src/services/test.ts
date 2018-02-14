@@ -2,7 +2,6 @@ import {
     Spinner
 } from 'cli-spinner';
 import * as Logger from '../util/log';
-import { log } from 'util';
 
 const spinner = new Spinner();
 spinner
@@ -20,12 +19,3 @@ export default function(isVerbose: boolean, isSilent: boolean) {
     Logger.fatal('fatal');
 }
 
-function getLogLevel(isVerbose: boolean, isSilent: boolean): Logger.ELogLevel {
-    if (isVerbose) {
-        return Logger.ELogLevel.verbose;
-    } else if (isSilent) {
-        return Logger.ELogLevel.silent;
-    } else {
-        return Logger.ELogLevel.default;
-    }
-}

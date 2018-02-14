@@ -1,17 +1,15 @@
 import {
     Spinner
-} from 'cli-spinner'
+} from 'cli-spinner';
 
-const spinner = new Spinner();
-spinner.setSpinnerString('|/-\\');
-
-export function showSpinner(text: string) {
-    spinner.stop();
-    spinner.setSpinnerTitle(`${text}... %s`);
+export default function showSpinner(text: string) {
+    const spinner = new Spinner(`${text}... %s`);
+    spinner.setSpinnerString('|/-\\');
     spinner.start();
-}
 
-export function hideSpinner() {
-    spinner.stop();
-    console.log('\n');
+    return {
+        hide() {
+            spinner.stop(true);
+        }
+    };
 }
