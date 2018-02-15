@@ -14,14 +14,8 @@ const fs = require("fs");
 const mkdirp = require("mkdirp");
 const spinner_1 = require("../util/spinner");
 const Log = require("../util/log");
-const file_1 = require("../config/file");
-const dir_1 = require("../config/dir");
-const dependencies_1 = require("../config/dependencies");
-const devDependencies_1 = require("../config/devDependencies");
-const jest_1 = require("../config/jest");
+const importConfig_1 = require("../util/importConfig");
 const npmScript_1 = require("../config/npmScript");
-const husky_1 = require("../config/husky");
-const commitizen_1 = require("../config/commitizen");
 function initProject(projectName, isVerbose, isSilent) {
     return __awaiter(this, void 0, void 0, function* () {
         Log.setLogLevel(getLogLevel(isVerbose, isSilent));
@@ -69,7 +63,8 @@ function enterProject(projectName) {
 }
 function copyFiles() {
     const spinner = spinner_1.default('拷贝文件中');
-    file_1.default.forEach((config) => {
+    const fileConfig = importConfig_1.default('file');
+    fileConfig.forEach((config) => {
         const { fileName, targetPath, sourcePath } = config;
         try {
             copyFile(Path.resolve(__dirname, '../config', sourcePath), Path.resolve(process.cwd(), targetPath));
@@ -91,7 +86,8 @@ function copyFile(sourcePath, targetPath) {
 }
 function mkdir() {
     const spinner = spinner_1.default('创建目录结构中');
-    dir_1.default.forEach((config) => {
+    const dirConfig = importConfig_1.default('dir');
+    dirConfig.forEach((config) => {
         const { directoryName, directoryBasePath } = config;
         try {
             mkdirp.sync(Path.resolve(process.cwd(), directoryBasePath, directoryName));
@@ -110,8 +106,9 @@ function mkdir() {
 function installDependencies() {
     return __awaiter(this, void 0, void 0, function* () {
         const npmDependenciesSpinner = spinner_1.default('正在安装npm依赖');
-        for (let i = 0; i < dependencies_1.npmDependenciesConfig.length; i++) {
-            const { dependencyName, version } = dependencies_1.npmDependenciesConfig[i];
+        const npmDependenciesConfig = importConfig_1.default('npmDependencies');
+        for (let i = 0; i < npmDependenciesConfig.length; i++) {
+            const { dependencyName, version } = npmDependenciesConfig[i];
             let moduleName = '';
             if (!version) {
                 moduleName = dependencyName;
@@ -134,8 +131,9 @@ function installDependencies() {
         npmDependenciesSpinner.hide();
         Log.info('安装npm依赖成功');
         const gitDependenciesSpinner = spinner_1.default('正在安装git依赖');
-        for (let i = 0; i < dependencies_1.gitDependenciesConfig.length; i++) {
-            const { dependencyName, gitUrl } = dependencies_1.gitDependenciesConfig[i];
+        const gitDependenciesConfig = importConfig_1.default('gitDependencies');
+        for (let i = 0; i < gitDependenciesConfig.length; i++) {
+            const { dependencyName, gitUrl } = gitDependenciesConfig[i];
             try {
                 yield Execa('npm', ['install', '--save', gitUrl]);
                 Log.debug(`安装git依赖${dependencyName}成功`);
@@ -155,8 +153,9 @@ function installDependencies() {
 function installDevDependencies() {
     return __awaiter(this, void 0, void 0, function* () {
         const spinner = spinner_1.default('正在安装npm开发依赖');
-        for (let i = 0; i < devDependencies_1.default.length; i++) {
-            const { dependencyName } = devDependencies_1.default[i];
+        const devDependenciesConfig = importConfig_1.default('devDependencies');
+        for (let i = 0; i < devDependenciesConfig.length; i++) {
+            const { dependencyName } = devDependenciesConfig[i];
             try {
                 yield Execa('npm', ['install', '--save-dev', dependencyName]);
                 Log.debug(`安装npm开发依赖${dependencyName}成功`);
@@ -193,7 +192,8 @@ function writeConfigToPackageJson() {
 }
 function writeJestConfigToPackageJson() {
     const packageJson = readPackageJson();
-    packageJson.jest = jest_1.default;
+    const jestConfig = importConfig_1.default('jest');
+    packageJson.jest = jestConfig;
     writePackageJson(packageJson);
 }
 function writeNpmScriptConfigToPackageJson() {
@@ -203,12 +203,13 @@ function writeNpmScriptConfigToPackageJson() {
 }
 function writeHuskyConfigToPackageJson() {
     const packageJson = readPackageJson();
-    packageJson.scripts = Object.assign(packageJson.scripts, husky_1.default);
+    const huskyConfig = importConfig_1.default('husky');
+    packageJson.scripts = Object.assign(packageJson.scripts, huskyConfig);
     writePackageJson(packageJson);
 }
 function writeCommitizenConfigToPackageJson() {
     const packageJson = readPackageJson();
-    packageJson.config = commitizen_1.default;
+    packageJson.config = importConfig_1.default('commitizen');
     writePackageJson(packageJson);
 }
 function readPackageJson() {

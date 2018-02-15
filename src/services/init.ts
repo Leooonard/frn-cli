@@ -5,18 +5,18 @@ import * as mkdirp from 'mkdirp';
 
 import showSpinner from '../util/spinner';
 import * as Log from '../util/log';
-
-import fileConfig from '../config/file';
-import dirConfig from '../config/dir';
+import importConfig from '../util/importConfig';
 import {
-    npmDependenciesConfig,
-    gitDependenciesConfig
-} from '../config/dependencies';
-import devDependenciesConfig from '../config/devDependencies';
-import jestConfig from '../config/jest';
-import npmScriptConfig from '../config/npmScript';
-import huskyConfig from '../config/husky';
-import commitizenConfig from '../config/commitizen';
+    ICommitizenConfig,
+    IDirConfig,
+    IFileConfig,
+    IHuskyConfig,
+    IJestConfig,
+    IDevDependencyConfig,
+    INpmDependencyConfig,
+    IGitDependencyConfig,
+    INpmScriptConfig
+} from '../util/configInterface';
 
 export default async function initProject(projectName: string, isVerbose: boolean, isSilent: boolean) {
     Log.setLogLevel(getLogLevel(isVerbose, isSilent));
@@ -32,7 +32,7 @@ export default async function initProject(projectName: string, isVerbose: boolea
     Log.fatal('安装成功');
 }
 
-function getLogLevel(isVerbose: boolean, isSilent: boolean): Logger.ELogLevel {
+function getLogLevel(isVerbose: boolean, isSilent: boolean): Log.ELogLevel {
     if (isVerbose) {
         return Log.ELogLevel.verbose;
     } else if (isSilent) {
@@ -67,6 +67,7 @@ function enterProject(projectName: string) {
 function copyFiles() {
     const spinner = showSpinner('拷贝文件中');
 
+    const fileConfig = importConfig<IFileConfig>('file');
     fileConfig.forEach((config) => {
         const {
             fileName,
@@ -99,6 +100,7 @@ function copyFile(sourcePath: string, targetPath: string) {
 function mkdir() {
     const spinner = showSpinner('创建目录结构中');
 
+    const dirConfig = importConfig<IDirConfig>('dir');
     dirConfig.forEach((config) => {
         const {
             directoryName,
@@ -125,6 +127,7 @@ function mkdir() {
 async function installDependencies() {
     const npmDependenciesSpinner = showSpinner('正在安装npm依赖');
 
+    const npmDependenciesConfig = importConfig<INpmDependencyConfig>('npmDependencies');
     for (let i = 0 ; i < npmDependenciesConfig.length ; i++) {
         const {
             dependencyName,
@@ -157,6 +160,7 @@ async function installDependencies() {
 
     const gitDependenciesSpinner = showSpinner('正在安装git依赖');
 
+    const gitDependenciesConfig = importConfig<IGitDependencyConfig>('gitDependencies');
     for (let i = 0 ; i < gitDependenciesConfig.length ; i++) {
         const {
             dependencyName,
@@ -184,6 +188,7 @@ async function installDependencies() {
 async function installDevDependencies() {
     const spinner = showSpinner('正在安装npm开发依赖');
 
+    const devDependenciesConfig = importConfig<IDevDependencyConfig>('devDependencies');
     for (let i = 0 ; i < devDependenciesConfig.length ; i++) {
         const {
             dependencyName
@@ -231,25 +236,28 @@ function writeConfigToPackageJson() {
 
 function writeJestConfigToPackageJson() {
     const packageJson = readPackageJson();
+    const jestConfig = importConfig<IJestConfig>('jest');
     packageJson.jest = jestConfig;
     writePackageJson(packageJson);
 }
 
 function writeNpmScriptConfigToPackageJson() {
     const packageJson = readPackageJson();
+    const npmScriptConfig = importConfig<INpmScriptConfig>('npmScript');
     packageJson.scripts = Object.assign(packageJson.scripts, npmScriptConfig);
     writePackageJson(packageJson);
 }
 
 function writeHuskyConfigToPackageJson() {
     const packageJson = readPackageJson();
+    const huskyConfig = importConfig<IHuskyConfig>('husky');
     packageJson.scripts = Object.assign(packageJson.scripts, huskyConfig);
     writePackageJson(packageJson);
 }
 
 function writeCommitizenConfigToPackageJson() {
     const packageJson = readPackageJson();
-    packageJson.config = commitizenConfig;
+    packageJson.config = importConfig<ICommitizenConfig>('commitizen');
     writePackageJson(packageJson);
 }
 

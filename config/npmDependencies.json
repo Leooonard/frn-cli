@@ -1,0 +1,10 @@
+[
+    {
+        "dependencyName": "redux",
+        "version": "3.7.2"
+    },
+    {
+        "dependencyName": "react-redux",
+        "version": "5.0.6"
+    }
+]

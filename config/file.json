@@ -1,4 +1,4 @@
-export default [
+[
     {
         "fileName": "tslint.json",
         "targetPath": "./tslint.json",
@@ -19,4 +19,4 @@ export default [
         "targetPath": "./commit-config.js",
         "sourcePath": "../../template/commit-config.js"
     }
-];
+]
