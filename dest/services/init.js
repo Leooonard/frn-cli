@@ -15,7 +15,6 @@ const mkdirp = require("mkdirp");
 const spinner_1 = require("../util/spinner");
 const Log = require("../util/log");
 const importConfig_1 = require("../util/importConfig");
-const npmScript_1 = require("../config/npmScript");
 function initProject(projectName, isVerbose, isSilent) {
     return __awaiter(this, void 0, void 0, function* () {
         Log.setLogLevel(getLogLevel(isVerbose, isSilent));
@@ -198,7 +197,8 @@ function writeJestConfigToPackageJson() {
 }
 function writeNpmScriptConfigToPackageJson() {
     const packageJson = readPackageJson();
-    packageJson.scripts = Object.assign(packageJson.scripts, npmScript_1.default);
+    const npmScriptConfig = importConfig_1.default('npmScript');
+    packageJson.scripts = Object.assign(packageJson.scripts, npmScriptConfig);
     writePackageJson(packageJson);
 }
 function writeHuskyConfigToPackageJson() {

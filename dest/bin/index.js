@@ -32,8 +32,8 @@ function main() {
             init_1.default(projectName, !!options.verbose, !!options.silent);
         });
         Command
-            .command('check-update')
-            .description('检查本地frn-cli是否为最新版本')
+            .command('update-config')
+            .description('更新本地frn-cli的配置文件')
             .action(() => {
             updateConfig_1.default();
         });

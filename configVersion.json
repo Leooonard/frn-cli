@@ -1,0 +1,11 @@
+{
+	"commitizen": 1,
+	"devDependencies": 1,
+	"dir": 1,
+	"file": 1,
+	"gitDependencies": 1,
+	"husky": 1,
+	"jest": 1,
+	"npmDependencies": 1,
+	"npmScript": 1
+}
