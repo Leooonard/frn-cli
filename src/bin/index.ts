@@ -18,7 +18,10 @@ async function main() {
 	await checkLowestSupportFrnCliVersion();
 
 	Command
-	.version('0.0.1')
+	.description(`frn-cli是一个用于创建crn/普通nodejs项目的命令行工具，并自动为项目集成babel，commitizen，tslint，typescript，jest，es6-plato等代码质量工具，提高工程师的开发效率。`)
+	.version(version);
+
+	Command
 	.command('init <projectName>')
 	.description('创建一个新的CRN项目')
 	.option('-n, --node', '创建一个普通的nodejs项目')
