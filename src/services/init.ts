@@ -2,6 +2,7 @@ import * as Execa from 'execa';
 import * as Path from 'path';
 import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
+import Chalk from 'chalk';
 
 import showSpinner from '../util/spinner';
 import * as Log from '../util/log';
@@ -18,10 +19,15 @@ import {
     INpmScriptConfig
 } from '../util/configInterface';
 
-export default async function initProject(projectName: string, isVerbose: boolean, isSilent: boolean) {
+export default async function initProject(projectName: string, isNodeProject: boolean, isVerbose: boolean, isSilent: boolean) {
     Log.setLogLevel(getLogLevel(isVerbose, isSilent));
 
-    await initCrnProject(projectName);
+    if (isNodeProject) {
+        await initNodeProject(projectName);
+    } else {
+        await checkCrnCli();
+        await initCrnProject(projectName);
+    }
     enterProject(projectName);
     copyFiles();
     mkdir();
@@ -42,6 +48,17 @@ function getLogLevel(isVerbose: boolean, isSilent: boolean): Log.ELogLevel {
     }
 }
 
+async function checkCrnCli() {
+	const crnCliUrl = 'http://crn.site.ctripcorp.com/';
+	
+	try {
+		await Execa('which', ['crn-cli']);
+	} catch(e) {
+		console.log(`请先安装${Chalk.red('crn-cli')}，安装教程：${Chalk.blueBright.underline(crnCliUrl)}`);
+		process.exit(1);
+	}
+}
+
 async function initCrnProject(projectName: string) {
     const spinner = showSpinner('创建crn项目中');
 
@@ -51,6 +68,29 @@ async function initCrnProject(projectName: string) {
         Log.info('创建crn项目成功');
     } catch (e) {
         spinner.hide();
+
+        const err: Error = e;
+        Log.error(err.message);
+        Log.error(err.stack);
+
+        process.exit(1);
+    }
+}
+
+async function initNodeProject(projectName: string) {
+    const spinner = showSpinner('创建nodejs项目中');
+
+    try {
+        mkdirp.sync(Path.resolve(projectName));
+
+        process.chdir(Path.resolve(projectName));
+        await Execa('npm', ['init', '--yes']);
+        process.chdir(Path.resolve('../'));
+
+        spinner.hide();
+        Log.info('创建nodejs项目成功');
+    } catch(e) {
+        spinner.hide();;
 
         const err: Error = e;
         Log.error(err.message);

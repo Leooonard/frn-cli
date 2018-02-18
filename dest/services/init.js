@@ -12,13 +12,20 @@ const Execa = require("execa");
 const Path = require("path");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
+const chalk_1 = require("chalk");
 const spinner_1 = require("../util/spinner");
 const Log = require("../util/log");
 const importConfig_1 = require("../util/importConfig");
-function initProject(projectName, isVerbose, isSilent) {
+function initProject(projectName, isNodeProject, isVerbose, isSilent) {
     return __awaiter(this, void 0, void 0, function* () {
         Log.setLogLevel(getLogLevel(isVerbose, isSilent));
-        yield initCrnProject(projectName);
+        if (isNodeProject) {
+            yield initNodeProject(projectName);
+        }
+        else {
+            yield checkCrnCli();
+            yield initCrnProject(projectName);
+        }
         enterProject(projectName);
         copyFiles();
         mkdir();
@@ -40,6 +47,18 @@ function getLogLevel(isVerbose, isSilent) {
         return Log.ELogLevel.default;
     }
 }
+function checkCrnCli() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const crnCliUrl = 'http://crn.site.ctripcorp.com/';
+        try {
+            yield Execa('which', ['crn-cli']);
+        }
+        catch (e) {
+            console.log(`请先安装${chalk_1.default.red('crn-cli')}，安装教程：${chalk_1.default.blueBright.underline(crnCliUrl)}`);
+            process.exit(1);
+        }
+    });
+}
 function initCrnProject(projectName) {
     return __awaiter(this, void 0, void 0, function* () {
         const spinner = spinner_1.default('创建crn项目中');
@@ -50,6 +69,27 @@ function initCrnProject(projectName) {
         }
         catch (e) {
             spinner.hide();
+            const err = e;
+            Log.error(err.message);
+            Log.error(err.stack);
+            process.exit(1);
+        }
+    });
+}
+function initNodeProject(projectName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const spinner = spinner_1.default('创建nodejs项目中');
+        try {
+            mkdirp.sync(Path.resolve(projectName));
+            process.chdir(Path.resolve(projectName));
+            yield Execa('npm', ['init', '--yes']);
+            process.chdir(Path.resolve('../'));
+            spinner.hide();
+            Log.info('创建nodejs项目成功');
+        }
+        catch (e) {
+            spinner.hide();
+            ;
             const err = e;
             Log.error(err.message);
             Log.error(err.stack);
