@@ -6,7 +6,9 @@ import Chalk from 'chalk';
 
 import showSpinner from '../util/spinner';
 import * as Log from '../util/log';
-import importConfig from '../util/importConfig';
+import importConfig, {
+    EConfigType
+} from '../util/importConfig';
 import {
     ICommitizenConfig,
     IDirConfig,
@@ -22,6 +24,12 @@ import {
 export default async function initProject(projectName: string, isNodeProject: boolean, isVerbose: boolean, isSilent: boolean) {
     try {
         Log.setLogLevel(getLogLevel(isVerbose, isSilent));
+        let configType: EConfigType;
+        if (isNodeProject) {
+            configType = EConfigType.node
+        } else {
+            configType = EConfigType.crn;
+        }
 
         if (isNodeProject) {
             await initNodeProject(projectName);
@@ -30,11 +38,11 @@ export default async function initProject(projectName: string, isNodeProject: bo
             await initCrnProject(projectName);
         }
         enterProject(projectName);
-        copyFiles();
-        mkdir();
-        await installDependencies();
-        await installDevDependencies();
-        writeConfigToPackageJson();
+        copyFiles(configType);
+        mkdir(configType);
+        await installDependencies(configType);
+        await installDevDependencies(configType);
+        writeConfigToPackageJson(configType);
 
         Log.fatal('安装成功');
     } catch(e) {
@@ -111,10 +119,10 @@ function enterProject(projectName: string) {
     process.chdir(Path.resolve(`./${projectName}`));
 }
 
-function copyFiles() {
+function copyFiles(configType: EConfigType) {
     const spinner = showSpinner('拷贝文件中');
 
-    const fileConfig = importConfig<IFileConfig>('file');
+    const fileConfig = importConfig<IFileConfig>(configType, 'file');
     fileConfig.forEach((config) => {
         const {
             fileName,
@@ -144,10 +152,10 @@ function copyFile(sourcePath: string, targetPath: string) {
     fs.writeFileSync(targetPath, fs.readFileSync(sourcePath, 'utf8'), 'utf8');
 }
 
-function mkdir() {
+function mkdir(configType: EConfigType) {
     const spinner = showSpinner('创建目录结构中');
 
-    const dirConfig = importConfig<IDirConfig>('dir');
+    const dirConfig = importConfig<IDirConfig>(configType, 'dir');
     dirConfig.forEach((config) => {
         const {
             directoryName,
@@ -171,10 +179,10 @@ function mkdir() {
     Log.info('创建目录结构成功');
 }
 
-async function installDependencies() {
+async function installDependencies(configType: EConfigType) {
     const npmDependenciesSpinner = showSpinner('正在安装npm依赖');
 
-    const npmDependenciesConfig = importConfig<INpmDependencyConfig>('npmDependencies');
+    const npmDependenciesConfig = importConfig<INpmDependencyConfig>(configType, 'npmDependencies');
     for (let i = 0 ; i < npmDependenciesConfig.length ; i++) {
         const {
             dependencyName,
@@ -207,7 +215,7 @@ async function installDependencies() {
 
     const gitDependenciesSpinner = showSpinner('正在安装git依赖');
 
-    const gitDependenciesConfig = importConfig<IGitDependencyConfig>('gitDependencies');
+    const gitDependenciesConfig = importConfig<IGitDependencyConfig>(configType, 'gitDependencies');
     for (let i = 0 ; i < gitDependenciesConfig.length ; i++) {
         const {
             dependencyName,
@@ -232,10 +240,10 @@ async function installDependencies() {
     Log.info('安装git依赖成功');
 }
 
-async function installDevDependencies() {
+async function installDevDependencies(configType: EConfigType) {
     const spinner = showSpinner('正在安装npm开发依赖');
 
-    const devDependenciesConfig = importConfig<IDevDependencyConfig>('devDependencies');
+    const devDependenciesConfig = importConfig<IDevDependencyConfig>(configType, 'devDependencies');
     for (let i = 0 ; i < devDependenciesConfig.length ; i++) {
         const {
             dependencyName
@@ -259,14 +267,14 @@ async function installDevDependencies() {
     Log.info('安装npm开发依赖成功');
 }
 
-function writeConfigToPackageJson() {
+function writeConfigToPackageJson(configType: EConfigType) {
     const spinner = showSpinner('正在写入配置');
 
     try {
-        writeJestConfigToPackageJson();
-        writeNpmScriptConfigToPackageJson();
-        writeHuskyConfigToPackageJson();
-        writeCommitizenConfigToPackageJson();
+        writeJestConfigToPackageJson(configType);
+        writeNpmScriptConfigToPackageJson(configType);
+        writeHuskyConfigToPackageJson(configType);
+        writeCommitizenConfigToPackageJson(configType);
     } catch(e) {
         spinner.hide();
 
@@ -281,30 +289,30 @@ function writeConfigToPackageJson() {
     Log.info('写入配置成功');
 }
 
-function writeJestConfigToPackageJson() {
+function writeJestConfigToPackageJson(configType: EConfigType) {
     const packageJson = readPackageJson();
-    const jestConfig = importConfig<IJestConfig>('jest');
+    const jestConfig = importConfig<IJestConfig>(configType, 'jest');
     packageJson.jest = jestConfig;
     writePackageJson(packageJson);
 }
 
-function writeNpmScriptConfigToPackageJson() {
+function writeNpmScriptConfigToPackageJson(configType: EConfigType) {
     const packageJson = readPackageJson();
-    const npmScriptConfig = importConfig<INpmScriptConfig>('npmScript');
+    const npmScriptConfig = importConfig<INpmScriptConfig>(configType, 'npmScript');
     packageJson.scripts = Object.assign(packageJson.scripts, npmScriptConfig);
     writePackageJson(packageJson);
 }
 
-function writeHuskyConfigToPackageJson() {
+function writeHuskyConfigToPackageJson(configType: EConfigType) {
     const packageJson = readPackageJson();
-    const huskyConfig = importConfig<IHuskyConfig>('husky');
+    const huskyConfig = importConfig<IHuskyConfig>(configType, 'husky');
     packageJson.scripts = Object.assign(packageJson.scripts, huskyConfig);
     writePackageJson(packageJson);
 }
 
-function writeCommitizenConfigToPackageJson() {
+function writeCommitizenConfigToPackageJson(configType: EConfigType) {
     const packageJson = readPackageJson();
-    packageJson.config = importConfig<ICommitizenConfig>('commitizen');
+    packageJson.config = importConfig<ICommitizenConfig>(configType, 'commitizen');
     writePackageJson(packageJson);
 }
 

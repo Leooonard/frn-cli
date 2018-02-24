@@ -20,6 +20,13 @@ function initProject(projectName, isNodeProject, isVerbose, isSilent) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             Log.setLogLevel(getLogLevel(isVerbose, isSilent));
+            let configType;
+            if (isNodeProject) {
+                configType = importConfig_1.EConfigType.node;
+            }
+            else {
+                configType = importConfig_1.EConfigType.crn;
+            }
             if (isNodeProject) {
                 yield initNodeProject(projectName);
             }
@@ -28,11 +35,11 @@ function initProject(projectName, isNodeProject, isVerbose, isSilent) {
                 yield initCrnProject(projectName);
             }
             enterProject(projectName);
-            copyFiles();
-            mkdir();
-            yield installDependencies();
-            yield installDevDependencies();
-            writeConfigToPackageJson();
+            copyFiles(configType);
+            mkdir(configType);
+            yield installDependencies(configType);
+            yield installDevDependencies(configType);
+            writeConfigToPackageJson(configType);
             Log.fatal('安装成功');
         }
         catch (e) {
@@ -108,9 +115,9 @@ function initNodeProject(projectName) {
 function enterProject(projectName) {
     process.chdir(Path.resolve(`./${projectName}`));
 }
-function copyFiles() {
+function copyFiles(configType) {
     const spinner = spinner_1.default('拷贝文件中');
-    const fileConfig = importConfig_1.default('file');
+    const fileConfig = importConfig_1.default(configType, 'file');
     fileConfig.forEach((config) => {
         const { fileName, targetPath, sourcePath } = config;
         try {
@@ -131,9 +138,9 @@ function copyFiles() {
 function copyFile(sourcePath, targetPath) {
     fs.writeFileSync(targetPath, fs.readFileSync(sourcePath, 'utf8'), 'utf8');
 }
-function mkdir() {
+function mkdir(configType) {
     const spinner = spinner_1.default('创建目录结构中');
-    const dirConfig = importConfig_1.default('dir');
+    const dirConfig = importConfig_1.default(configType, 'dir');
     dirConfig.forEach((config) => {
         const { directoryName, directoryBasePath } = config;
         try {
@@ -150,10 +157,10 @@ function mkdir() {
     spinner.hide();
     Log.info('创建目录结构成功');
 }
-function installDependencies() {
+function installDependencies(configType) {
     return __awaiter(this, void 0, void 0, function* () {
         const npmDependenciesSpinner = spinner_1.default('正在安装npm依赖');
-        const npmDependenciesConfig = importConfig_1.default('npmDependencies');
+        const npmDependenciesConfig = importConfig_1.default(configType, 'npmDependencies');
         for (let i = 0; i < npmDependenciesConfig.length; i++) {
             const { dependencyName, version } = npmDependenciesConfig[i];
             let moduleName = '';
@@ -178,7 +185,7 @@ function installDependencies() {
         npmDependenciesSpinner.hide();
         Log.info('安装npm依赖成功');
         const gitDependenciesSpinner = spinner_1.default('正在安装git依赖');
-        const gitDependenciesConfig = importConfig_1.default('gitDependencies');
+        const gitDependenciesConfig = importConfig_1.default(configType, 'gitDependencies');
         for (let i = 0; i < gitDependenciesConfig.length; i++) {
             const { dependencyName, gitUrl } = gitDependenciesConfig[i];
             try {
@@ -197,10 +204,10 @@ function installDependencies() {
         Log.info('安装git依赖成功');
     });
 }
-function installDevDependencies() {
+function installDevDependencies(configType) {
     return __awaiter(this, void 0, void 0, function* () {
         const spinner = spinner_1.default('正在安装npm开发依赖');
-        const devDependenciesConfig = importConfig_1.default('devDependencies');
+        const devDependenciesConfig = importConfig_1.default(configType, 'devDependencies');
         for (let i = 0; i < devDependenciesConfig.length; i++) {
             const { dependencyName } = devDependenciesConfig[i];
             try {
@@ -219,13 +226,13 @@ function installDevDependencies() {
         Log.info('安装npm开发依赖成功');
     });
 }
-function writeConfigToPackageJson() {
+function writeConfigToPackageJson(configType) {
     const spinner = spinner_1.default('正在写入配置');
     try {
-        writeJestConfigToPackageJson();
-        writeNpmScriptConfigToPackageJson();
-        writeHuskyConfigToPackageJson();
-        writeCommitizenConfigToPackageJson();
+        writeJestConfigToPackageJson(configType);
+        writeNpmScriptConfigToPackageJson(configType);
+        writeHuskyConfigToPackageJson(configType);
+        writeCommitizenConfigToPackageJson(configType);
     }
     catch (e) {
         spinner.hide();
@@ -237,27 +244,27 @@ function writeConfigToPackageJson() {
     spinner.hide();
     Log.info('写入配置成功');
 }
-function writeJestConfigToPackageJson() {
+function writeJestConfigToPackageJson(configType) {
     const packageJson = readPackageJson();
-    const jestConfig = importConfig_1.default('jest');
+    const jestConfig = importConfig_1.default(configType, 'jest');
     packageJson.jest = jestConfig;
     writePackageJson(packageJson);
 }
-function writeNpmScriptConfigToPackageJson() {
+function writeNpmScriptConfigToPackageJson(configType) {
     const packageJson = readPackageJson();
-    const npmScriptConfig = importConfig_1.default('npmScript');
+    const npmScriptConfig = importConfig_1.default(configType, 'npmScript');
     packageJson.scripts = Object.assign(packageJson.scripts, npmScriptConfig);
     writePackageJson(packageJson);
 }
-function writeHuskyConfigToPackageJson() {
+function writeHuskyConfigToPackageJson(configType) {
     const packageJson = readPackageJson();
-    const huskyConfig = importConfig_1.default('husky');
+    const huskyConfig = importConfig_1.default(configType, 'husky');
     packageJson.scripts = Object.assign(packageJson.scripts, huskyConfig);
     writePackageJson(packageJson);
 }
-function writeCommitizenConfigToPackageJson() {
+function writeCommitizenConfigToPackageJson(configType) {
     const packageJson = readPackageJson();
-    packageJson.config = importConfig_1.default('commitizen');
+    packageJson.config = importConfig_1.default(configType, 'commitizen');
     writePackageJson(packageJson);
 }
 function readPackageJson() {
