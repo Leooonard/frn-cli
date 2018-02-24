@@ -1,0 +1,27 @@
+[
+    {
+        "dependencyName": "@types/jest"
+    },
+
+    {
+        "dependencyName": "typescript"
+    },
+    
+    {
+        "dependencyName": "tslint"
+    },
+    {
+        "dependencyName": "tslint-config-airbnb"
+    },
+
+    {
+        "dependencyName": "jest"
+    },
+    {
+        "dependencyName": "ts-jest"
+    },
+
+    {
+        "dependencyName": "es6-plato"
+    }
+]

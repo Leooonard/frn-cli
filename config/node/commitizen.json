@@ -1,0 +1,5 @@
+{
+    "commitizen": {
+        "path": "./commit-config.js"
+    }
+}

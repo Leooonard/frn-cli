@@ -1,0 +1,17 @@
+[
+    {
+        "fileName": "tslint.json",
+        "targetPath": "./tslint.json",
+        "sourcePath": "../../template/node/tslint.json"
+    },
+    {
+        "fileName": "tsconfig.json",
+        "targetPath": "./tsconfig.json",
+        "sourcePath": "../../template/node/tsconfig.json"
+    },
+    {
+        "fileName": "commit-config.js",
+        "targetPath": "./commit-config.js",
+        "sourcePath": "../../template/node/commit-config.js"
+    }
+]

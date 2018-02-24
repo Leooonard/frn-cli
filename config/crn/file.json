@@ -2,21 +2,21 @@
     {
         "fileName": "tslint.json",
         "targetPath": "./tslint.json",
-        "sourcePath": "../../template/tslint.json"
+        "sourcePath": "../../template/crn/tslint.json"
     },
     {
         "fileName": "tsconfig.json",
         "targetPath": "./tsconfig.json",
-        "sourcePath": "../../template/tsconfig.json"
+        "sourcePath": "../../template/crn/tsconfig.json"
     },
     {
         "fileName": ".babelrc",
         "targetPath": "./.babelrc",
-        "sourcePath": "../../template/.babelrc"
+        "sourcePath": "../../template/crn/.babelrc"
     },
     {
         "fileName": "commit-config.js",
         "targetPath": "./commit-config.js",
-        "sourcePath": "../../template/commit-config.js"
+        "sourcePath": "../../template/crn/commit-config.js"
     }
 ]
