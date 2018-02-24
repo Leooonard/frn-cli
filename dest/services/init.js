@@ -18,21 +18,29 @@ const Log = require("../util/log");
 const importConfig_1 = require("../util/importConfig");
 function initProject(projectName, isNodeProject, isVerbose, isSilent) {
     return __awaiter(this, void 0, void 0, function* () {
-        Log.setLogLevel(getLogLevel(isVerbose, isSilent));
-        if (isNodeProject) {
-            yield initNodeProject(projectName);
+        try {
+            Log.setLogLevel(getLogLevel(isVerbose, isSilent));
+            if (isNodeProject) {
+                yield initNodeProject(projectName);
+            }
+            else {
+                yield checkCrnCli();
+                yield initCrnProject(projectName);
+            }
+            enterProject(projectName);
+            copyFiles();
+            mkdir();
+            yield installDependencies();
+            yield installDevDependencies();
+            writeConfigToPackageJson();
+            Log.fatal('安装成功');
         }
-        else {
-            yield checkCrnCli();
-            yield initCrnProject(projectName);
+        catch (e) {
+            const err = e;
+            Log.error(err.message);
+            Log.error(err.stack);
+            Log.fatal('安装失败');
         }
-        enterProject(projectName);
-        copyFiles();
-        mkdir();
-        yield installDependencies();
-        yield installDevDependencies();
-        writeConfigToPackageJson();
-        Log.fatal('安装成功');
     });
 }
 exports.default = initProject;
@@ -258,7 +266,7 @@ function readPackageJson() {
 }
 function writePackageJson(packageJson) {
     const packageJsonPath = getPackageJsonPath();
-    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson), 'utf8');
+    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 4), 'utf8');
 }
 function getPackageJsonPath() {
     return Path.resolve(process.cwd(), 'package.json');

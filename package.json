@@ -21,12 +21,12 @@
     "@types/mkdirp": "^0.5.2",
     "@types/node": "^9.4.5",
     "@types/semver": "^5.5.0",
-    "cli-spinner": "^0.2.7",
-    "mkdirp": "^0.5.1",
     "tslint": "^5.9.1",
     "typescript": "^2.7.1"
   },
   "dependencies": {
+    "cli-spinner": "^0.2.7",
+    "mkdirp": "^0.5.1",
     "axios": "^0.17.1",
     "chalk": "^2.3.1",
     "commander": "^2.14.1",
