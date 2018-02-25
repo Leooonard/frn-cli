@@ -21,7 +21,21 @@ import {
     INpmScriptConfig
 } from '../util/configInterface';
 
-export default async function initProject(projectName: string, isNodeProject: boolean, isVerbose: boolean, isSilent: boolean) {
+const TAOBAO_REGISTRY = 'https://registry.npm.taobao.org';
+
+export default async function initProject(
+    projectName: string, 
+    isNodeProject: boolean,
+    isUseTaobaoRegistry: boolean, 
+    isVerbose: boolean, 
+    isSilent: boolean
+) {
+    let originalRegistry = '';
+    if (isUseTaobaoRegistry) {
+        originalRegistry = await getNpmRegistry();
+        setNpmRegistry(TAOBAO_REGISTRY);
+    }
+
     try {
         Log.setLogLevel(getLogLevel(isVerbose, isSilent));
         let configType: EConfigType;
@@ -44,13 +58,31 @@ export default async function initProject(projectName: string, isNodeProject: bo
         await installDevDependencies(configType);
         writeConfigToPackageJson(configType);
 
+        if (isUseTaobaoRegistry) {
+            await setNpmRegistry(originalRegistry);
+        }
+
         Log.fatal('安装成功');
     } catch(e) {
+        if (isUseTaobaoRegistry) {
+            await setNpmRegistry(originalRegistry);
+        }
+
         const err: Error = e;
         Log.error(err.message);
         Log.error(err.stack);
         Log.fatal('安装失败');
     }
+}
+
+async function getNpmRegistry() {
+    return Execa('npm', ['config', 'get', 'registry']).then((result) => {
+        return result.stdout;
+    });
+}
+
+async function setNpmRegistry(registry: string) {
+    await Execa('npm', ['config', 'set', 'registry', registry]);
 }
 
 function getLogLevel(isVerbose: boolean, isSilent: boolean): Log.ELogLevel {

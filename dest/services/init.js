@@ -16,8 +16,14 @@ const chalk_1 = require("chalk");
 const spinner_1 = require("../util/spinner");
 const Log = require("../util/log");
 const importConfig_1 = require("../util/importConfig");
-function initProject(projectName, isNodeProject, isVerbose, isSilent) {
+const TAOBAO_REGISTRY = 'https://registry.npm.taobao.org';
+function initProject(projectName, isNodeProject, isUseTaobaoRegistry, isVerbose, isSilent) {
     return __awaiter(this, void 0, void 0, function* () {
+        let originalRegistry = '';
+        if (isUseTaobaoRegistry) {
+            originalRegistry = yield getNpmRegistry();
+            setNpmRegistry(TAOBAO_REGISTRY);
+        }
         try {
             Log.setLogLevel(getLogLevel(isVerbose, isSilent));
             let configType;
@@ -40,9 +46,15 @@ function initProject(projectName, isNodeProject, isVerbose, isSilent) {
             yield installDependencies(configType);
             yield installDevDependencies(configType);
             writeConfigToPackageJson(configType);
+            if (isUseTaobaoRegistry) {
+                yield setNpmRegistry(originalRegistry);
+            }
             Log.fatal('安装成功');
         }
         catch (e) {
+            if (isUseTaobaoRegistry) {
+                yield setNpmRegistry(originalRegistry);
+            }
             const err = e;
             Log.error(err.message);
             Log.error(err.stack);
@@ -51,6 +63,18 @@ function initProject(projectName, isNodeProject, isVerbose, isSilent) {
     });
 }
 exports.default = initProject;
+function getNpmRegistry() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return Execa('npm', ['config', 'get', 'registry']).then((result) => {
+            return result.stdout;
+        });
+    });
+}
+function setNpmRegistry(registry) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield Execa('npm', ['config', 'set', 'registry', registry]);
+    });
+}
 function getLogLevel(isVerbose, isSilent) {
     if (isVerbose) {
         return Log.ELogLevel.verbose;
