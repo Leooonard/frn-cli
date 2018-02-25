@@ -6,9 +6,10 @@ import Chalk from 'chalk';
 
 import showSpinner from '../util/spinner';
 import * as Log from '../util/log';
-import importConfig, {
+import {
+    importConfig,
     EConfigType
-} from '../util/importConfig';
+} from '../util/configManager';
 import {
     ICommitizenConfig,
     IDirConfig,

@@ -22,9 +22,9 @@ function getRemoteConfigVersion() {
     });
 }
 exports.getRemoteConfigVersion = getRemoteConfigVersion;
-function getRemoteConfig(configName) {
+function getRemoteConfig(configType, configName) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield axios_1.default.get(URL.resolve(config_1.default.host, `config/${configName}.json`));
+        const response = yield axios_1.default.get(URL.resolve(config_1.default.host, `config/${configType}/${configName}.json`));
         const SUCCESS_HTTP_CODE = 200;
         if (response.status !== SUCCESS_HTTP_CODE) {
             throw new Error(`请求失败，http code: ${response.status}`);

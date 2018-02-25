@@ -1,11 +1,17 @@
 import {
     getRemoteConfigVersion,
-    getRemoteConfig
+    getRemoteConfig,
+
+    IRemoteConfigVersion
 } from '../model/configVersion';
+import {
+    updateConfig as writeConfig,
+    updateConfigVersion,
+    getLocalConfigVersion,
+    EConfigType
+} from '../util/configManager';
 import * as Log from '../util/log';
 import showSpinner from '../util/spinner';
-import * as fs from 'fs';
-import * as Path from 'path';
 import Chalk from 'chalk';
 
 export default async function updateConfig() {
@@ -21,66 +27,88 @@ export default async function updateConfig() {
         return;
     }
 
-    const updateConfigList = getUpdateConfigList(remoteConfigVersion);
+    const updateConfigVersionList = getUpdateConfigList(remoteConfigVersion);
+    const updateConfigVersionNameList = Object.keys(updateConfigVersionList);
 
-    for (let i = 0 ; i < updateConfigList.length ; i++) {
-        const configName = updateConfigList[i];
-        await updateConfigItem(configName);
+    for (let i = 0 ; i < updateConfigVersionNameList.length ; i++) {
+        const updateConfigVersionName = updateConfigVersionNameList[i];
+        const updateConfigList = updateConfigVersionList[updateConfigVersionName];
+
+        for (let j = 0 ; j < updateConfigList.length ; j++) {
+            const configName = updateConfigList[j];
+            await updateConfigItem(updateConfigVersionName as EConfigType, configName);
+        }
     }
-
+    
     updateConfigVersion(JSON.stringify(remoteConfigVersion));
 
     spinner.hide();
     Log.fatal('更新成功！');
 }
 
-function canUpdateConfig(remoteConfigVersion: {[_: string]: number}): boolean {
+function canUpdateConfig(remoteConfigVersion: IRemoteConfigVersion): boolean {
     const localConfigVersion = getLocalConfigVersion();
+
     if (Object.keys(localConfigVersion).length !== Object.keys(remoteConfigVersion).length) {
         return false;
     }
 
-    return Object.keys(localConfigVersion).every((configName) => {
-        return remoteConfigVersion[configName] !== undefined;
+    return Object.keys(localConfigVersion).every((configVersionName) => {
+        const localConfigVersionItem = localConfigVersion[configVersionName];
+        const remoteConfigVersionItem = remoteConfigVersion[configVersionName];
+
+        if (!remoteConfigVersionItem) {
+            return false;
+        }
+
+        if (Object.keys(localConfigVersionItem).length !== Object.keys(remoteConfigVersionItem).length) {
+            return false;
+        }
+
+        return Object.keys(localConfigVersionItem).every((configName) => {
+            return remoteConfigVersionItem[configName] !== undefined;
+        });
     });    
 }
 
-function needUpdateConfig(remoteConfigVersion: {[_: string]: number}): boolean {
+function needUpdateConfig(remoteConfigVersion: IRemoteConfigVersion): boolean {
     const localConfigVersion = getLocalConfigVersion();
-    return Object.keys(localConfigVersion).some((configName) => {
-        const localVersion = localConfigVersion[configName];
-        const remoteVersion = remoteConfigVersion[configName];
 
-        return remoteVersion > localVersion;
+    return Object.keys(localConfigVersion).some((configVersionName) => {
+        const localConfigVersionItem = localConfigVersion[configVersionName];
+        const remoteConfigVersionItem = remoteConfigVersion[configVersionName];
+
+        return Object.keys(localConfigVersionItem).some((configName) => {
+            const localVersion = localConfigVersionItem[configName];
+            const remoteVersion = remoteConfigVersionItem[configName];
+    
+            return remoteVersion > localVersion;
+        });
     });
 }
 
-function getLocalConfigVersion(): {[_: string]: number} {
-    const localConfigVersion = fs.readFileSync('../../configVersion.json', 'utf8');
-    return JSON.parse(localConfigVersion);
-}
-
-function getUpdateConfigList(remoteConfigVersion: {[_: string]: number}): string[] {
+function getUpdateConfigList(remoteConfigVersion: IRemoteConfigVersion): {[_: string]: string[]} {
     const localConfigVersion = getLocalConfigVersion();
-    return Object.keys(localConfigVersion).filter((configName) => {
-        const localVersion = localConfigVersion[configName];
-        const remoteVersion = remoteConfigVersion[configName];
+    const updateConfigVersionList: {[_: string]: string[]} = {};
 
-        return remoteVersion > localVersion;
+    Object.keys(localConfigVersion).forEach((configVersionName) => {
+        const localConfigVersionItem = localConfigVersion[configVersionName];
+        const remoteConfigVersionItem = remoteConfigVersion[configVersionName];
+
+        const updateConfigList = Object.keys(localConfigVersionItem).filter((configName) => {
+            const localVersion = localConfigVersionItem[configName];
+            const remoteVersion = remoteConfigVersionItem[configName];
+    
+            return remoteVersion > localVersion;
+        });
+
+        updateConfigVersionList[configVersionName] = updateConfigList;
     });
+
+    return updateConfigVersionList;
 }
 
-async function updateConfigItem(configName: string) {
-    const remoteConfig = await getRemoteConfig(configName);
-    writeRemoteConfig(configName, remoteConfig);
-}
-
-function writeRemoteConfig(configName: string, remoteConfig: string) {
-    const configPath = Path.resolve(__dirname, '../../config', `${configName}.json`);
-    fs.writeFileSync(configPath, remoteConfig, 'utf8');
-}
-
-function updateConfigVersion(remoteConfigVersion: string) {
-    const configVersionPath = Path.resolve(__dirname, '../../configVersion.json');
-    fs.writeFileSync(configVersionPath, remoteConfigVersion, 'utf8');
+async function updateConfigItem(configType: EConfigType, configName: string) {
+    const remoteConfig = await getRemoteConfig(configType, configName);
+    writeConfig(configType, configName, remoteConfig);
 }

@@ -15,7 +15,7 @@ const mkdirp = require("mkdirp");
 const chalk_1 = require("chalk");
 const spinner_1 = require("../util/spinner");
 const Log = require("../util/log");
-const importConfig_1 = require("../util/importConfig");
+const configManager_1 = require("../util/configManager");
 const TAOBAO_REGISTRY = 'https://registry.npm.taobao.org';
 function initProject(projectName, isNodeProject, isUseTaobaoRegistry, isVerbose, isSilent) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -28,10 +28,10 @@ function initProject(projectName, isNodeProject, isUseTaobaoRegistry, isVerbose,
             Log.setLogLevel(getLogLevel(isVerbose, isSilent));
             let configType;
             if (isNodeProject) {
-                configType = importConfig_1.EConfigType.node;
+                configType = configManager_1.EConfigType.node;
             }
             else {
-                configType = importConfig_1.EConfigType.crn;
+                configType = configManager_1.EConfigType.crn;
             }
             if (isNodeProject) {
                 yield initNodeProject(projectName);
@@ -141,7 +141,7 @@ function enterProject(projectName) {
 }
 function copyFiles(configType) {
     const spinner = spinner_1.default('拷贝文件中');
-    const fileConfig = importConfig_1.default(configType, 'file');
+    const fileConfig = configManager_1.importConfig(configType, 'file');
     fileConfig.forEach((config) => {
         const { fileName, targetPath, sourcePath } = config;
         try {
@@ -164,7 +164,7 @@ function copyFile(sourcePath, targetPath) {
 }
 function mkdir(configType) {
     const spinner = spinner_1.default('创建目录结构中');
-    const dirConfig = importConfig_1.default(configType, 'dir');
+    const dirConfig = configManager_1.importConfig(configType, 'dir');
     dirConfig.forEach((config) => {
         const { directoryName, directoryBasePath } = config;
         try {
@@ -184,7 +184,7 @@ function mkdir(configType) {
 function installDependencies(configType) {
     return __awaiter(this, void 0, void 0, function* () {
         const npmDependenciesSpinner = spinner_1.default('正在安装npm依赖');
-        const npmDependenciesConfig = importConfig_1.default(configType, 'npmDependencies');
+        const npmDependenciesConfig = configManager_1.importConfig(configType, 'npmDependencies');
         for (let i = 0; i < npmDependenciesConfig.length; i++) {
             const { dependencyName, version } = npmDependenciesConfig[i];
             let moduleName = '';
@@ -209,7 +209,7 @@ function installDependencies(configType) {
         npmDependenciesSpinner.hide();
         Log.info('安装npm依赖成功');
         const gitDependenciesSpinner = spinner_1.default('正在安装git依赖');
-        const gitDependenciesConfig = importConfig_1.default(configType, 'gitDependencies');
+        const gitDependenciesConfig = configManager_1.importConfig(configType, 'gitDependencies');
         for (let i = 0; i < gitDependenciesConfig.length; i++) {
             const { dependencyName, gitUrl } = gitDependenciesConfig[i];
             try {
@@ -231,7 +231,7 @@ function installDependencies(configType) {
 function installDevDependencies(configType) {
     return __awaiter(this, void 0, void 0, function* () {
         const spinner = spinner_1.default('正在安装npm开发依赖');
-        const devDependenciesConfig = importConfig_1.default(configType, 'devDependencies');
+        const devDependenciesConfig = configManager_1.importConfig(configType, 'devDependencies');
         for (let i = 0; i < devDependenciesConfig.length; i++) {
             const { dependencyName } = devDependenciesConfig[i];
             try {
@@ -270,25 +270,25 @@ function writeConfigToPackageJson(configType) {
 }
 function writeJestConfigToPackageJson(configType) {
     const packageJson = readPackageJson();
-    const jestConfig = importConfig_1.default(configType, 'jest');
+    const jestConfig = configManager_1.importConfig(configType, 'jest');
     packageJson.jest = jestConfig;
     writePackageJson(packageJson);
 }
 function writeNpmScriptConfigToPackageJson(configType) {
     const packageJson = readPackageJson();
-    const npmScriptConfig = importConfig_1.default(configType, 'npmScript');
+    const npmScriptConfig = configManager_1.importConfig(configType, 'npmScript');
     packageJson.scripts = Object.assign(packageJson.scripts, npmScriptConfig);
     writePackageJson(packageJson);
 }
 function writeHuskyConfigToPackageJson(configType) {
     const packageJson = readPackageJson();
-    const huskyConfig = importConfig_1.default(configType, 'husky');
+    const huskyConfig = configManager_1.importConfig(configType, 'husky');
     packageJson.scripts = Object.assign(packageJson.scripts, huskyConfig);
     writePackageJson(packageJson);
 }
 function writeCommitizenConfigToPackageJson(configType) {
     const packageJson = readPackageJson();
-    packageJson.config = importConfig_1.default(configType, 'commitizen');
+    packageJson.config = configManager_1.importConfig(configType, 'commitizen');
     writePackageJson(packageJson);
 }
 function readPackageJson() {

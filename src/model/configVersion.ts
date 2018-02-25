@@ -1,8 +1,17 @@
 import Axios from 'axios';
 import Config from './config';
 import * as URL from 'url';
+import {
+    EConfigType
+} from '../util/configManager';
 
-export async function getRemoteConfigVersion(): Promise<{[_: string]: number}> {
+export interface IRemoteConfigVersion {
+    [_: string]: {
+        [_: string]: number
+    }
+}
+
+export async function getRemoteConfigVersion(): Promise<IRemoteConfigVersion> {
     const response = await Axios.get<string>(URL.resolve(Config.host, 'frn_cli_version'));
 
     const SUCCESS_HTTP_CODE = 200;
@@ -13,8 +22,8 @@ export async function getRemoteConfigVersion(): Promise<{[_: string]: number}> {
     return JSON.parse(response.data);
 }
 
-export async function getRemoteConfig(configName: string): Promise<string> {
-	const response = await Axios.get<string>(URL.resolve(Config.host, `config/${configName}.json`));
+export async function getRemoteConfig(configType: EConfigType, configName: string): Promise<string> {
+	const response = await Axios.get<string>(URL.resolve(Config.host, `config/${configType}/${configName}.json`));
 
 	const SUCCESS_HTTP_CODE = 200;
     if (response.status !== SUCCESS_HTTP_CODE) {
