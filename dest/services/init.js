@@ -17,7 +17,7 @@ const spinner_1 = require("../util/spinner");
 const Log = require("../util/log");
 const configManager_1 = require("../util/configManager");
 const TAOBAO_REGISTRY = 'https://registry.npm.taobao.org';
-function initProject(projectName, isNodeProject, isUseTaobaoRegistry, isVerbose, isSilent) {
+function initProject(projectName, isNpmProject, isUseTaobaoRegistry, isVerbose, isSilent) {
     return __awaiter(this, void 0, void 0, function* () {
         let originalRegistry = '';
         if (isUseTaobaoRegistry) {
@@ -27,13 +27,13 @@ function initProject(projectName, isNodeProject, isUseTaobaoRegistry, isVerbose,
         try {
             Log.setLogLevel(getLogLevel(isVerbose, isSilent));
             let configType;
-            if (isNodeProject) {
+            if (isNpmProject) {
                 configType = configManager_1.EConfigType.node;
             }
             else {
                 configType = configManager_1.EConfigType.crn;
             }
-            if (isNodeProject) {
+            if (isNpmProject) {
                 yield initNodeProject(projectName);
             }
             else {

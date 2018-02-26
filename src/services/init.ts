@@ -26,7 +26,7 @@ const TAOBAO_REGISTRY = 'https://registry.npm.taobao.org';
 
 export default async function initProject(
     projectName: string, 
-    isNodeProject: boolean,
+    isNpmProject: boolean,
     isUseTaobaoRegistry: boolean, 
     isVerbose: boolean, 
     isSilent: boolean
@@ -40,13 +40,13 @@ export default async function initProject(
     try {
         Log.setLogLevel(getLogLevel(isVerbose, isSilent));
         let configType: EConfigType;
-        if (isNodeProject) {
+        if (isNpmProject) {
             configType = EConfigType.node
         } else {
             configType = EConfigType.crn;
         }
 
-        if (isNodeProject) {
+        if (isNpmProject) {
             await initNodeProject(projectName);
         } else {
             await checkCrnCli();

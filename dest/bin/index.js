@@ -26,12 +26,12 @@ function main() {
         Command
             .command('init <projectName>')
             .description('创建一个新的CRN项目')
-            .option('-n, --node', '创建一个普通的nodejs项目')
+            .option('-n, --npm', '创建一个普通的npm package')
             .option('-t, --taobao', '使用淘宝npm源安装依赖，这会加快依赖的安装速度')
             .option('-v, --verbose', '展示详细日志')
             .option('-q, --silent', '隐藏非关键日志')
             .action((projectName, options) => {
-            init_1.default(projectName, !!options.node, !!options.taobao, !!options.verbose, !!options.silent);
+            init_1.default(projectName, !!options.npm, !!options.taobao, !!options.verbose, !!options.silent);
         });
         Command
             .command('update-config')
