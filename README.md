@@ -5,10 +5,11 @@ frn-cli是一个用于创建crn/普通nodejs项目的命令行工具，并自动
 
 # 安装
 ```
-npm install -g <git url>
+npm install -g git+https://github.com/Leooonard/frn-cli.git
 ```
 
 # 使用
 ```
 frn-cli -h
 ```
+## frn-cli init
