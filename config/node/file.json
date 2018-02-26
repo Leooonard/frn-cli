@@ -13,5 +13,10 @@
         "fileName": "commit-config.js",
         "targetPath": "./commit-config.js",
         "sourcePath": "../../template/node/commit-config.js"
+    },
+    {
+        "fileName": ".gitignore",
+        "targetPath": "./.gitignore",
+        "sourcePath": "../../template/node/.gitignore"
     }
 ]
