@@ -10,7 +10,7 @@ import {
 	getLowestSupportFrnCliVersion
 } from '../model/frnCliVersion';
 
-const version = '0.0.1';
+const version = '1.0.0';
 
 main();
 

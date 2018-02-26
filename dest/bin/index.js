@@ -15,7 +15,7 @@ const Semver = require("semver");
 const init_1 = require("../services/init");
 const updateConfig_1 = require("../services/updateConfig");
 const frnCliVersion_1 = require("../model/frnCliVersion");
-const version = '0.0.1';
+const version = '1.0.0';
 main();
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
