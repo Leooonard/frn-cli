@@ -16,6 +16,7 @@
     "@types/cli-spinner": "^0.2.0",
     "@types/commander": "^2.12.2",
     "@types/execa": "^0.8.1",
+    "@types/inquirer": "0.0.36",
     "@types/log4js": "^2.3.5",
     "@types/minimist": "^1.2.0",
     "@types/mkdirp": "^0.5.2",
@@ -25,14 +26,15 @@
     "typescript": "^2.7.1"
   },
   "dependencies": {
-    "cli-spinner": "^0.2.7",
-    "mkdirp": "^0.5.1",
     "axios": "^0.17.1",
     "chalk": "^2.3.1",
+    "cli-spinner": "^0.2.7",
     "commander": "^2.14.1",
     "execa": "^0.9.0",
+    "inquirer": "^5.1.0",
     "log4js": "^2.4.1",
     "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1",
     "semver": "^5.5.0"
   }
 }

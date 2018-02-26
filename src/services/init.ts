@@ -29,23 +29,27 @@ export default async function initProject(
     isNpmProject: boolean,
     isUseTaobaoRegistry: boolean, 
     isVerbose: boolean, 
-    isSilent: boolean
+    isSilent: boolean,
+    isExist: boolean
 ) {
+    // 设置log等级。
+    Log.setLogLevel(getLogLevel(isVerbose, isSilent));
+
+    // 设置npm源。
     let originalRegistry = '';
     if (isUseTaobaoRegistry) {
         originalRegistry = await getNpmRegistry();
         setNpmRegistry(TAOBAO_REGISTRY);
     }
 
-    try {
-        Log.setLogLevel(getLogLevel(isVerbose, isSilent));
-        let configType: EConfigType;
-        if (isNpmProject) {
-            configType = EConfigType.node
-        } else {
-            configType = EConfigType.crn;
-        }
+    let configType: EConfigType;
+    if (isNpmProject) {
+        configType = EConfigType.node
+    } else {
+        configType = EConfigType.crn;
+    }
 
+    try {
         if (isNpmProject) {
             await initNodeProject(projectName);
         } else {
