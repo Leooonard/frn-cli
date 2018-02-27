@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
 import * as Execa from 'execa';
 import Chalk from 'chalk';
+import * as Inquirer from 'inquirer';
 
 import showSpinner from '../util/spinner';
 import * as Log from '../util/log';
@@ -30,6 +31,13 @@ export default async function createProject(projectName: string, shouldExist: bo
 	} else {
 		if (isProjectExist(projectName)) {
 			// 询问用户是否希望覆盖
+			Inquirer.prompt([
+				{
+					type: 'confirm',
+					name: 'override',
+					message: `目录${projectName}已存在，是否覆盖？(y/N)`
+				}
+			]).then();
 		}
 
 		if (isNpm) {
