@@ -1,14 +1,17 @@
 [
     {
         "directoryName": "src",
-        "directoryBasePath": "./"
+        "directoryBasePath": "./",
+        "supportProjectTypeList": []
     },
     {
         "directoryName": "dest",
-        "directoryBasePath": "./"
+        "directoryBasePath": "./",
+        "supportProjectTypeList": []
     },
     {
         "directoryName": "__tests__",
-        "directoryBasePath": "./"
+        "directoryBasePath": "./",
+        "supportProjectTypeList": []
     }
 ]

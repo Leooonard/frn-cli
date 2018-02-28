@@ -2,6 +2,7 @@ export type ICommitizenConfig = object;
 export interface IDir {
 	directoryName: string;
 	directoryBasePath: string;
+	supportProjectTypeList: string[];
 };
 export type IDirConfig = IDir[];
 export interface IFile {

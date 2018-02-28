@@ -29,6 +29,7 @@ async function main() {
 	.option('-t, --taobao', '使用淘宝npm源安装依赖，这会加快依赖的安装速度')
 	.option('-v, --verbose', '展示详细日志')
 	.option('-q, --silent', '隐藏非关键日志')
+	.option('-r, --redux', '创建redux项目，该选项只在创建CRN项目时有效')
 	.action((projectName, options) => {
 		initProject(
 			projectName, 
@@ -36,7 +37,8 @@ async function main() {
 			!!options.taobao, 
 			!!options.verbose, 
 			!!options.silent,
-			!!options.exist
+			!!options.exist,
+			!!options.redux
 		);
 	});
 

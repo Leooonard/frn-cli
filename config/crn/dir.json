@@ -1,14 +1,69 @@
 [
     {
         "directoryName": "src",
-        "directoryBasePath": "./"
+        "directoryBasePath": "./",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "Component",
+        "directoryBasePath": "./src",
+        "supportProjectTypeList": [
+            "redux"
+        ]
+    },
+    {
+        "directoryName": "Container",
+        "directoryBasePath": "./src",
+        "supportProjectTypeList": [
+            "redux"
+        ]
+    },
+    {
+        "directoryName": "Action",
+        "directoryBasePath": "./src",
+        "supportProjectTypeList": [
+            "redux"
+        ]
+    },
+    {
+        "directoryName": "Reducer",
+        "directoryBasePath": "./src",
+        "supportProjectTypeList": [
+            "redux"
+        ]
+    },
+    {
+        "directoryName": "Middleware",
+        "directoryBasePath": "./src",
+        "supportProjectTypeList": [
+            "redux"
+        ]
+    },
+    {
+        "directoryName": "Model",
+        "directoryBasePath": "./src",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "Util",
+        "directoryBasePath": "./src",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "Element",
+        "directoryBasePath": "./src",
+        "supportProjectTypeList": [
+            "react"
+        ]
     },
     {
         "directoryName": "dest",
-        "directoryBasePath": "./"
+        "directoryBasePath": "./",
+        "supportProjectTypeList": []
     },
     {
         "directoryName": "__tests__",
-        "directoryBasePath": "./"
+        "directoryBasePath": "./",
+        "supportProjectTypeList": []
     }
 ]
