@@ -5,18 +5,22 @@ import * as mkdirp from 'mkdirp';
 import * as Execa from 'execa';
 import Chalk from 'chalk';
 import * as Inquirer from 'inquirer';
+import * as rimraf from 'rimraf';
 
 import showSpinner from '../util/spinner';
 import * as Log from '../util/log';
 
 export enum EError {
 	projectNotExist = 'project not exist',
+	projectAlreadyExist = 'project already exist',
+	removeExistProjectFailed = 'remove exist project failed',
 	createNpmProjectFailed = 'create npm project failed',
 	crnCliNotExist = 'crn-cli not exist',
 	createCrnProjectFailed = 'create crn project failed'
 }
 
 /**
+ * 创建新项目。
  * projectName 项目名
  * shouldExist 目标项目是否已存在
  * isNpm 是否创建npm项目
@@ -31,13 +35,19 @@ export default async function createProject(projectName: string, shouldExist: bo
 	} else {
 		if (isProjectExist(projectName)) {
 			// 询问用户是否希望覆盖
-			Inquirer.prompt([
+			const isOverride = await Inquirer.prompt([
 				{
 					type: 'confirm',
 					name: 'override',
 					message: `目录${projectName}已存在，是否覆盖？(y/N)`
 				}
-			]).then();
+			]).then(answers => answers.override);
+
+			if (isOverride) {
+				removeExistProject(projectName);
+			} else {
+				throw new Error(EError.projectAlreadyExist);
+			}
 		}
 
 		if (isNpm) {
@@ -54,8 +64,18 @@ function isProjectExist(projectName: string): boolean {
 	return fs.existsSync(projectPath);
 }
 
-function overrideExistProject() {
-
+function removeExistProject(projectName: string) {
+	const projectPath = Path.resolve(projectName);
+	try {
+		rimraf.sync(projectPath);
+	} catch (e) {
+		const err: Error = e;
+		Log.error(err.message);
+		Log.error(err.stack);
+		Log.error('删除目录失败，请尝试手动删除该目录');
+		
+		throw new Error(EError.removeExistProjectFailed);
+	}
 }
 
 async function createNpmProject(projectName: string) {
