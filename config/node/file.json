@@ -17,6 +17,6 @@
     {
         "fileName": ".gitignore",
         "targetPath": "./.gitignore",
-        "sourcePath": "../../template/node/.gitignore"
+        "sourcePath": "../../template/node/.gitignore2"
     }
 ]
