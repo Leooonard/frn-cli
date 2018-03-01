@@ -42,7 +42,7 @@ export default async function initProject(
     }
 
     try {
-        createProject(projectName, isExist, isNpmProject);
+        await createProject(projectName, isExist, isNpmProject);
         enterProject(projectName);
         copyFiles(configType, isOverride);
         mkdir(configType, isRedux);
