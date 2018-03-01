@@ -50,17 +50,13 @@ export default async function initProject(
         await installDevDependencies(configType, isOverride);
         writeConfigToPackageJson(configType, isOverride);
 
-        if (isUseTaobaoRegistry) {
-            await setNpmRegistry(originalRegistry);
-        }
-
         Log.fatal('安装成功');
     } catch(e) {
+        Log.fatal('安装失败');
+    } finally {
         if (isUseTaobaoRegistry) {
             await setNpmRegistry(originalRegistry);
         }
-
-        Log.fatal('安装失败');
     }
 }
 

@@ -44,16 +44,15 @@ function initProject(projectName, isNpmProject, isUseTaobaoRegistry, isVerbose, 
             yield installDependencies_1.default(configType, isOverride);
             yield installDevDependencies_1.default(configType, isOverride);
             writeConfigToPackageJson_1.default(configType, isOverride);
-            if (isUseTaobaoRegistry) {
-                yield setNpmRegistry(originalRegistry);
-            }
             Log.fatal('安装成功');
         }
         catch (e) {
+            Log.fatal('安装失败');
+        }
+        finally {
             if (isUseTaobaoRegistry) {
                 yield setNpmRegistry(originalRegistry);
             }
-            Log.fatal('安装失败');
         }
     });
 }
