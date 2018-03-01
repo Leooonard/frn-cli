@@ -10,12 +10,13 @@ import {
 import {
     IFileConfig
 } from './configInterface';
+import isFileExist from './fileExist';
 
 enum EError {
     copyFileFailed = 'copy file failed'
 }
 
-export default function copyFiles(configType: EConfigType) {
+export default function copyFiles(configType: EConfigType, isOverride: boolean) {
     const spinner = showSpinner('拷贝文件中');
 
     const fileConfig = importConfig<IFileConfig>(configType, 'file');
@@ -27,8 +28,21 @@ export default function copyFiles(configType: EConfigType) {
         } = config;
 
         try {
-            copyFile(Path.resolve(__dirname, '../config', sourcePath), Path.resolve(targetPath));
-            Log.debug(`拷贝${fileName}成功！`);
+            const realSourcePath = Path.resolve(__dirname, '../config', sourcePath);
+            const realTargetPath = Path.resolve(targetPath);
+            
+            if (isFileExist(realTargetPath)) {
+                Log.debug(`${fileName}文件已存在`);
+                if (isOverride) {
+                    copyFile(realSourcePath, realTargetPath);
+                    Log.debug(`覆写${fileName}成功！`);
+                } else {
+                    Log.debug(`跳过${fileName}`);
+                }
+            } else {
+                copyFile(realSourcePath, realTargetPath);
+                Log.debug(`拷贝${fileName}成功！`);
+            }
         } catch (e) {
             spinner.hide();
 

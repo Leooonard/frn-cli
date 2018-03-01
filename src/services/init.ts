@@ -35,7 +35,8 @@ export default async function initProject(
     isVerbose: boolean, 
     isSilent: boolean,
     isExist: boolean,
-    isRedux: boolean
+    isRedux: boolean,
+    isOverride: boolean
 ) {
     // 设置log等级。
     Log.setLogLevel(getLogLevel(isVerbose, isSilent));
@@ -57,7 +58,7 @@ export default async function initProject(
     try {
         createProject(projectName, isExist, isNpmProject);
         enterProject(projectName);
-        copyFiles(configType);
+        copyFiles(configType, isOverride);
         mkdir(configType, isRedux);
         await installDependencies(configType);
         await installDevDependencies(configType);
