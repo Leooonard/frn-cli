@@ -13,7 +13,7 @@ import isFileExist from '../util/fileExist';
 
 export enum EError {
 	projectNotExist = 'project not exist',
-	invalidProject = 'project not container package.json',
+	invalidProject = 'project not contain package.json',
 	projectAlreadyExist = 'project already exist',
 	removeExistProjectFailed = 'remove exist project failed',
 	createNpmProjectFailed = 'create npm project failed',
@@ -30,8 +30,10 @@ export enum EError {
 export default async function createProject(projectName: string, shouldExist: boolean, isNpm: boolean) {
 	if (shouldExist) {
 		if (!isProjectExist(projectName)) {
+			Log.error('目录不存在');
 			throw new Error(EError.projectNotExist);
 		} else if (!isValidProject(projectName)) {
+			Log.error('目录中不包含package.json');
 			throw new Error(EError.invalidProject);
 		} else {
 			return;
@@ -43,7 +45,7 @@ export default async function createProject(projectName: string, shouldExist: bo
 				{
 					type: 'confirm',
 					name: 'override',
-					message: `目录${projectName}已存在，是否覆盖？(y/N)`
+					message: `目录${projectName}已存在，是否删除？(y/N)`
 				}
 			]).then(answers => answers.override);
 

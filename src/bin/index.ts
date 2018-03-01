@@ -26,7 +26,7 @@ async function main() {
 	.description('创建一个新的CRN项目')
 	.option('-n, --npm', '创建一个普通的npm package')
 	.option('-e, --exist', '在已有项目中写入配置')
-	.option('-a, --override', '在已有项目中写入配置时，覆写已有配置')
+	.option('-A, --no-override', '在已有项目中写入配置时，不覆写已有配置')
 	.option('-t, --taobao', '使用淘宝npm源安装依赖，这会加快依赖的安装速度')
 	.option('-v, --verbose', '展示详细日志')
 	.option('-q, --silent', '隐藏非关键日志')
