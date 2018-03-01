@@ -9,9 +9,11 @@ import * as rimraf from 'rimraf';
 
 import showSpinner from '../util/spinner';
 import * as Log from '../util/log';
+import isFileExist from '../util/fileExist';
 
 export enum EError {
 	projectNotExist = 'project not exist',
+	invalidProject = 'project not container package.json',
 	projectAlreadyExist = 'project already exist',
 	removeExistProjectFailed = 'remove exist project failed',
 	createNpmProjectFailed = 'create npm project failed',
@@ -29,6 +31,8 @@ export default async function createProject(projectName: string, shouldExist: bo
 	if (shouldExist) {
 		if (!isProjectExist(projectName)) {
 			throw new Error(EError.projectNotExist);
+		} else if (!isValidProject(projectName)) {
+			throw new Error(EError.invalidProject);
 		} else {
 			return;
 		}
@@ -62,6 +66,11 @@ export default async function createProject(projectName: string, shouldExist: bo
 function isProjectExist(projectName: string): boolean {
 	const projectPath = Path.resolve(projectName);
 	return fs.existsSync(projectPath);
+}
+
+function isValidProject(projectName: string): boolean {
+	const packageJsonPath = Path.resolve(projectName, 'package.json');
+	return isFileExist(packageJsonPath);
 }
 
 function removeExistProject(projectName: string) {
