@@ -14,14 +14,14 @@ import {
     ICommitizenConfig
 } from './configInterface';
 
-export default function writeConfigToPackageJson(configType: EConfigType) {
+export default function writeConfigToPackageJson(configType: EConfigType, isOverride: boolean) {
     const spinner = showSpinner('正在写入配置');
 
     try {
-        writeJestConfigToPackageJson(configType);
+        writeJestConfigToPackageJson(configType, isOverride);
         writeNpmScriptConfigToPackageJson(configType);
         writeHuskyConfigToPackageJson(configType);
-        writeCommitizenConfigToPackageJson(configType);
+        writeCommitizenConfigToPackageJson(configType, isOverride);
     } catch (e) {
         spinner.hide();
 
@@ -37,10 +37,11 @@ export default function writeConfigToPackageJson(configType: EConfigType) {
     Log.info('写入配置成功');
 }
 
-function writeJestConfigToPackageJson(configType: EConfigType) {
+function writeJestConfigToPackageJson(configType: EConfigType, isOverride: boolean) {
     const packageJson = readPackageJson();
-    const jestConfig = importConfig<IJestConfig>(configType, 'jest');
-    packageJson.jest = jestConfig;
+    if (!isConfigExist(packageJson, 'jest') || isOverride) {
+        packageJson.jest = importConfig<IJestConfig>(configType, 'jest');
+    }
     writePackageJson(packageJson);
 }
 
@@ -58,13 +59,19 @@ function writeHuskyConfigToPackageJson(configType: EConfigType) {
     writePackageJson(packageJson);
 }
 
-function writeCommitizenConfigToPackageJson(configType: EConfigType) {
+function writeCommitizenConfigToPackageJson(configType: EConfigType, isOverride: boolean) {
     const packageJson = readPackageJson();
-    packageJson.config = importConfig<ICommitizenConfig>(configType, 'commitizen');
+    if (!isConfigExist(packageJson, 'config') || isOverride) {
+        packageJson.config = importConfig<ICommitizenConfig>(configType, 'commitizen');
+    }
     writePackageJson(packageJson);
 }
 
-function readPackageJson() {
+function isConfigExist(packageJson: {[_: string]: any}, configName: string): boolean {
+    return packageJson[configName] !== undefined;
+}
+
+export function readPackageJson() {
     const packageJsonPath = getPackageJsonPath();
     return JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 }
@@ -75,5 +82,5 @@ function writePackageJson(packageJson: object) {
 }
 
 function getPackageJsonPath() {
-    return Path.resolve(process.cwd(), 'package.json');
+    return Path.resolve('package.json');
 }
