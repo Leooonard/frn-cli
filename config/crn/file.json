@@ -23,5 +23,10 @@
         "fileName": ".gitignore",
         "targetPath": "./.gitignore",
         "sourcePath": "../../template/crn/.gitignore2"
+    },
+    {
+        "fileName": "post-install.js",
+        "targetPath": "./post-install.js",
+        "sourcePath": "../../template/crn/post-install.js"
     }
 ]

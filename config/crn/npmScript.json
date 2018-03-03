@@ -4,5 +4,6 @@
     "tsc": "tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts' || true",
     "tsdiagnosis": "tsc --noEmit || true",
-    "check": "npm run lint && npm run tsdiagnosis"
+    "check": "npm run lint && npm run tsdiagnosis",
+    "postinstall": "node ./post-install.js"
 }
