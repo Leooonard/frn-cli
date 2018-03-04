@@ -18,6 +18,7 @@ const mkdir_1 = require("../util/mkdir");
 const writeConfigToPackageJson_1 = require("../util/writeConfigToPackageJson");
 const installDependencies_1 = require("../util/installDependencies");
 const installDevDependencies_1 = require("../util/installDevDependencies");
+const postInit_1 = require("../util/postInit");
 const TAOBAO_REGISTRY = 'https://registry.npm.taobao.org';
 function initProject(projectName, isNpmProject, isUseTaobaoRegistry, isVerbose, isSilent, isExist, isRedux, isOverride) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -44,6 +45,7 @@ function initProject(projectName, isNpmProject, isUseTaobaoRegistry, isVerbose, 
             yield installDependencies_1.default(configType, isOverride);
             yield installDevDependencies_1.default(configType, isOverride);
             writeConfigToPackageJson_1.default(configType, isOverride);
+            postInit_1.default(configType);
             Log.fatal('安装成功');
         }
         catch (e) {

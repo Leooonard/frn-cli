@@ -11,6 +11,7 @@ import mkdir from '../util/mkdir';
 import writeConfigToPackageJson from '../util/writeConfigToPackageJson';
 import installDependencies from '../util/installDependencies';
 import installDevDependencies from '../util/installDevDependencies';
+import postInit from '../util/postInit';
 
 const TAOBAO_REGISTRY = 'https://registry.npm.taobao.org';
 
@@ -49,6 +50,7 @@ export default async function initProject(
         await installDependencies(configType, isOverride);
         await installDevDependencies(configType, isOverride);
         writeConfigToPackageJson(configType, isOverride);
+        postInit(configType);
 
         Log.fatal('安装成功');
     } catch(e) {
