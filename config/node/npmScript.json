@@ -1,8 +1,9 @@
 {
     "test": "jest --coverage",
-    "tsb": "tsc",
-    "tsc": "tsc --w",
+    "tsc": "tsc",
+    "tsw": "tsc --w",
     "lint": "tslint -c tslint.json 'src/**/*.ts' || true",
     "tsdiagnosis": "tsc --noEmit || true",
-    "check": "npm run lint && npm run tsdiagnosis"
+    "check": "npm run lint && npm run tsdiagnosis",
+    "plato": "es6-plato -r -d plato-report dest"
 }
