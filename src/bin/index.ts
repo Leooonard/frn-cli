@@ -44,12 +44,12 @@ async function main() {
 		);
 	});
 
-	Command
-	.command('update-config')
-	.description('更新本地frn-cli的配置文件')
-	.action(() => {
-		updateConfig();
-	});
+	// Command
+	// .command('update-config')
+	// .description('更新本地frn-cli的配置文件')
+	// .action(() => {
+	// 	updateConfig();
+	// });
 
 	Command.parse(process.argv);
 }

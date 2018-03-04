@@ -13,7 +13,6 @@ const chalk_1 = require("chalk");
 const Command = require("commander");
 const Semver = require("semver");
 const init_1 = require("../services/init");
-const updateConfig_1 = require("../services/updateConfig");
 const frnCliVersion_1 = require("../model/frnCliVersion");
 const version = '1.0.0';
 main();
@@ -36,12 +35,12 @@ function main() {
             .action((projectName, options) => {
             init_1.default(projectName, !!options.npm, !!options.taobao, !!options.verbose, !!options.silent, !!options.exist, !!options.redux, !!options.override);
         });
-        Command
-            .command('update-config')
-            .description('更新本地frn-cli的配置文件')
-            .action(() => {
-            updateConfig_1.default();
-        });
+        // Command
+        // .command('update-config')
+        // .description('更新本地frn-cli的配置文件')
+        // .action(() => {
+        // 	updateConfig();
+        // });
         Command.parse(process.argv);
     });
 }
