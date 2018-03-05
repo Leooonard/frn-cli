@@ -38,7 +38,8 @@
         "no-bitwise": false,
         "no-console": false,
         "no-magic-numbers": true,
-        "no-increment-decrement": false
+        "no-increment-decrement": false,
+        "object-shorthand-properties-first": false
     },
     "rulesDirectory": []
 }
