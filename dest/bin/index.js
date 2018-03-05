@@ -9,11 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = require("chalk");
 const Command = require("commander");
-const Semver = require("semver");
 const init_1 = require("../services/init");
-const frnCliVersion_1 = require("../model/frnCliVersion");
 const version = '1.0.0';
 main();
 function main() {
@@ -48,10 +45,10 @@ function checkLowestSupportFrnCliVersion() {
     return __awaiter(this, void 0, void 0, function* () {
         // TODO 完成版本号服务后放开该函数。
         return;
-        const lowsetSupportFrnCliVersion = yield frnCliVersion_1.getLowestSupportFrnCliVersion();
-        if (Semver.gt(lowsetSupportFrnCliVersion, version)) {
-            console.log(`您的frn-cli版本过旧，请使用以下命令进行升级：${chalk_1.default.red.bold('npm uninstall -g frn-cli & npm i -g frn-cli')}`);
-            process.exit(1);
-        }
+        // const lowsetSupportFrnCliVersion = await getLowestSupportFrnCliVersion();
+        // if (Semver.gt(lowsetSupportFrnCliVersion, version)) {
+        // 	console.log(`您的frn-cli版本过旧，请使用以下命令进行升级：${Chalk.red.bold('npm uninstall -g frn-cli & npm i -g frn-cli')}`);
+        // 	process.exit(1);
+        // }
     });
 }
