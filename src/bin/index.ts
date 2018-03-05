@@ -1,14 +1,7 @@
 #!/usr/bin/env node
 
-import Chalk from 'chalk';
-import * as Execa from 'execa';
 import * as Command from 'commander';
-import * as Semver from 'semver';
 import initProject from '../services/init';
-import updateConfig from '../services/updateConfig';
-import {
-	getLowestSupportFrnCliVersion
-} from '../model/frnCliVersion';
 
 const version = '1.0.0';
 
@@ -58,10 +51,10 @@ async function checkLowestSupportFrnCliVersion() {
 	// TODO 完成版本号服务后放开该函数。
 	return;
 
-	const lowsetSupportFrnCliVersion = await getLowestSupportFrnCliVersion();
-	if (Semver.gt(lowsetSupportFrnCliVersion, version)) {
-		console.log(`您的frn-cli版本过旧，请使用以下命令进行升级：${Chalk.red.bold('npm uninstall -g frn-cli & npm i -g frn-cli')}`);
-		process.exit(1);
-	}
+	// const lowsetSupportFrnCliVersion = await getLowestSupportFrnCliVersion();
+	// if (Semver.gt(lowsetSupportFrnCliVersion, version)) {
+	// 	console.log(`您的frn-cli版本过旧，请使用以下命令进行升级：${Chalk.red.bold('npm uninstall -g frn-cli & npm i -g frn-cli')}`);
+	// 	process.exit(1);
+	// }
 }
 
