@@ -10,6 +10,9 @@ import * as rimraf from 'rimraf';
 import showSpinner from '../util/spinner';
 import * as Log from '../util/log';
 import isFileExist from '../util/fileExist';
+import { 
+	EConfigType 
+} from './configManager';
 
 export enum EError {
 	projectNotExist = 'project not exist',
@@ -25,9 +28,9 @@ export enum EError {
  * 创建新项目。
  * projectName 项目名
  * shouldExist 目标项目是否已存在
- * isNpm 是否创建npm项目
+ * configType 项目配置类型
  */
-export default async function createProject(projectName: string, shouldExist: boolean, isNpm: boolean) {
+export default async function createProject(projectName: string, shouldExist: boolean, configType: EConfigType) {
 	if (shouldExist) {
 		if (!isProjectExist(projectName)) {
 			Log.error('目录不存在');
@@ -56,7 +59,7 @@ export default async function createProject(projectName: string, shouldExist: bo
 			}
 		}
 
-		if (isNpm) {
+		if (configType !== EConfigType.crn) {
 			await createNpmProject(projectName);
 		} else {
 			await checkCrnCliExist();

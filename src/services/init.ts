@@ -39,7 +39,7 @@ export default async function initProject(
     let configType = getConfigType(isNpmProject, isKnrProject);
 
     try {
-        await createProject(projectName, isExist, isNpmProject || isKnrProject);
+        await createProject(projectName, isExist, configType);
         enterProject(projectName);
         copyFiles(configType, isOverride);
         mkdir(configType, isRedux);

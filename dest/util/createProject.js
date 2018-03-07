@@ -18,6 +18,7 @@ const rimraf = require("rimraf");
 const spinner_1 = require("../util/spinner");
 const Log = require("../util/log");
 const fileExist_1 = require("../util/fileExist");
+const configManager_1 = require("./configManager");
 var EError;
 (function (EError) {
     EError["projectNotExist"] = "project not exist";
@@ -32,9 +33,9 @@ var EError;
  * 创建新项目。
  * projectName 项目名
  * shouldExist 目标项目是否已存在
- * isNpm 是否创建npm项目
+ * configType 项目配置类型
  */
-function createProject(projectName, shouldExist, isNpm) {
+function createProject(projectName, shouldExist, configType) {
     return __awaiter(this, void 0, void 0, function* () {
         if (shouldExist) {
             if (!isProjectExist(projectName)) {
@@ -66,7 +67,7 @@ function createProject(projectName, shouldExist, isNpm) {
                     throw new Error(EError.projectAlreadyExist);
                 }
             }
-            if (isNpm) {
+            if (configType !== configManager_1.EConfigType.crn) {
                 yield createNpmProject(projectName);
             }
             else {

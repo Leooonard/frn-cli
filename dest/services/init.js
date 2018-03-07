@@ -32,7 +32,7 @@ function initProject(projectName, isNpmProject, isKnrProject, isUseTaobaoRegistr
         }
         let configType = getConfigType(isNpmProject, isKnrProject);
         try {
-            yield createProject_1.default(projectName, isExist, isNpmProject || isKnrProject);
+            yield createProject_1.default(projectName, isExist, configType);
             enterProject(projectName);
             copyFiles_1.default(configType, isOverride);
             mkdir_1.default(configType, isRedux);
