@@ -6,7 +6,8 @@ import {
 
 export enum EConfigType {
 	crn = 'crn',
-	node = 'node'
+	node = 'node',
+	knr = 'knr'
 }
 
 export function importConfig<T>(configType: EConfigType, configName: string): T {

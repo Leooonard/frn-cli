@@ -20,7 +20,7 @@ const installDependencies_1 = require("../util/installDependencies");
 const installDevDependencies_1 = require("../util/installDevDependencies");
 const postInit_1 = require("../util/postInit");
 const TAOBAO_REGISTRY = 'https://registry.npm.taobao.org';
-function initProject(projectName, isNpmProject, isUseTaobaoRegistry, isVerbose, isSilent, isExist, isRedux, isOverride) {
+function initProject(projectName, isNpmProject, isKnrProject, isUseTaobaoRegistry, isVerbose, isSilent, isExist, isRedux, isOverride) {
     return __awaiter(this, void 0, void 0, function* () {
         // 设置log等级。
         Log.setLogLevel(getLogLevel(isVerbose, isSilent));
@@ -30,15 +30,9 @@ function initProject(projectName, isNpmProject, isUseTaobaoRegistry, isVerbose, 
             originalRegistry = yield getNpmRegistry();
             setNpmRegistry(TAOBAO_REGISTRY);
         }
-        let configType;
-        if (isNpmProject) {
-            configType = configManager_1.EConfigType.node;
-        }
-        else {
-            configType = configManager_1.EConfigType.crn;
-        }
+        let configType = getConfigType(isNpmProject, isKnrProject);
         try {
-            yield createProject_1.default(projectName, isExist, isNpmProject);
+            yield createProject_1.default(projectName, isExist, isNpmProject || isKnrProject);
             enterProject(projectName);
             copyFiles_1.default(configType, isOverride);
             mkdir_1.default(configType, isRedux);
@@ -59,6 +53,17 @@ function initProject(projectName, isNpmProject, isUseTaobaoRegistry, isVerbose, 
     });
 }
 exports.default = initProject;
+function getConfigType(isNpmProject, isKnrProject) {
+    if (isNpmProject) {
+        return configManager_1.EConfigType.node;
+    }
+    else if (isKnrProject) {
+        return configManager_1.EConfigType.knr;
+    }
+    else {
+        return configManager_1.EConfigType.crn;
+    }
+}
 function getNpmRegistry() {
     return __awaiter(this, void 0, void 0, function* () {
         return Execa('npm', ['config', 'get', 'registry']).then((result) => {

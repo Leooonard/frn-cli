@@ -6,6 +6,7 @@ var EConfigType;
 (function (EConfigType) {
     EConfigType["crn"] = "crn";
     EConfigType["node"] = "node";
+    EConfigType["knr"] = "knr";
 })(EConfigType = exports.EConfigType || (exports.EConfigType = {}));
 function importConfig(configType, configName) {
     const configPath = getConfigPath(configType, configName);

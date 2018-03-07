@@ -18,6 +18,7 @@ const TAOBAO_REGISTRY = 'https://registry.npm.taobao.org';
 export default async function initProject(
     projectName: string, 
     isNpmProject: boolean,
+    isKnrProject: boolean,
     isUseTaobaoRegistry: boolean, 
     isVerbose: boolean, 
     isSilent: boolean,
@@ -35,15 +36,10 @@ export default async function initProject(
         setNpmRegistry(TAOBAO_REGISTRY);
     }
 
-    let configType: EConfigType;
-    if (isNpmProject) {
-        configType = EConfigType.node
-    } else {
-        configType = EConfigType.crn;
-    }
+    let configType = getConfigType(isNpmProject, isKnrProject);
 
     try {
-        await createProject(projectName, isExist, isNpmProject);
+        await createProject(projectName, isExist, isNpmProject || isKnrProject);
         enterProject(projectName);
         copyFiles(configType, isOverride);
         mkdir(configType, isRedux);
@@ -59,6 +55,16 @@ export default async function initProject(
         if (isUseTaobaoRegistry) {
             await setNpmRegistry(originalRegistry);
         }
+    }
+}
+
+function getConfigType(isNpmProject: boolean, isKnrProject: boolean): EConfigType {
+    if (isNpmProject) {
+        return EConfigType.node
+    } else if (isKnrProject) {
+        return EConfigType.knr;
+    } else {
+        return EConfigType.crn;
     }
 }
 
