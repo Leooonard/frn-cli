@@ -25,7 +25,7 @@ export default function mkdir(configType: EConfigType, isReduxProject = false) {
     if (configType === EConfigType.crn) {
         mkdirCrn(isReduxProject)
     } else {
-        mkdirNpm();
+        mkdirCommon(configType);
     }
 }
 
@@ -82,10 +82,10 @@ function isSupportProjectType(projectType: EProjectType, supportProjectTypeList:
     return supportProjectTypeList.indexOf(projectType) > -1;
 }
 
-function mkdirNpm() {
-    const spinner = showSpinner('创建npm项目目录结构中');
+function mkdirCommon(configType: EConfigType) {
+    const spinner = showSpinner(`创建${configType}项目目录结构中`);
 
-    const dirConfig = importConfig<IDirConfig>(EConfigType.node, 'dir');
+    const dirConfig = importConfig<IDirConfig>(configType, 'dir');
     dirConfig.forEach((config) => {
         const {
             directoryName,
@@ -100,12 +100,12 @@ function mkdirNpm() {
             const err: Error = e;
             Log.error(err.message);
             Log.error(err.stack);
-            Log.error('创建npm项目目录结构失败');
+            Log.error(`创建${configType}项目目录结构失败`);
 
             throw new Error(EError.mkdirFailed);
         }
     });
 
     spinner.hide();
-    Log.info('创建npm项目目录结构成功');
+    Log.info(`创建${configType}项目目录结构成功`);
 }
