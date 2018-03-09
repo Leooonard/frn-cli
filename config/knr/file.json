@@ -1,0 +1,122 @@
+[
+    {
+        "fileName": ".babelrc",
+        "targetPath": "./.babelrc",
+        "sourcePath": "../../template/knr/.babelrc"
+    },
+    {
+        "fileName": ".gitignore",
+        "targetPath": "./.gitignore",
+        "sourcePath": "../../template/knr/.gitignore"
+    },
+    {
+        "fileName": "app.config.js",
+        "targetPath": "./app.config.js",
+        "sourcePath": "../../template/knr/app.config.js"
+    },
+    {
+        "fileName": "index.js",
+        "targetPath": "./index.js",
+        "sourcePath": "../../template/knr/index.js"
+    },
+    {
+        "fileName": "next.config.js",
+        "targetPath": "./next.config.js",
+        "sourcePath": "../../template/knr/next.config.js"
+    },
+    {
+        "fileName": "nodemon.json",
+        "targetPath": "./nodemon.json",
+        "sourcePath": "../../template/knr/nodemon.json"
+    },
+    {
+        "fileName": "tsconfig.json",
+        "targetPath": "./tsconfig.json",
+        "sourcePath": "../../template/knr/tsconfig.json"
+    },
+    {
+        "fileName": "tsconfig.prod.json",
+        "targetPath": "./tsconfig.prod.json",
+        "sourcePath": "../../template/knr/tsconfig.prod.json"
+    },
+    {
+        "fileName": "resetStyle.js",
+        "targetPath": "./webapp/src/assets/styles/resetStyle.js",
+        "sourcePath": "../../template/knr/styles/resetStyle.js"
+    },
+    {
+        "fileName": "demoStyle.js",
+        "targetPath": "./webapp/src/assets/styles/demoStyle.js",
+        "sourcePath": "../../template/knr/styles/demoStyle.js"
+    },
+    {
+        "fileName": "errorStyle.js",
+        "targetPath": "./webapp/src/assets/styles/errorStyle.js",
+        "sourcePath": "../../template/knr/styles/errorStyle.js"
+    },
+    {
+        "fileName": "convertData.ts",
+        "targetPath": "./webapp/src/lib/convertData.ts",
+        "sourcePath": "../../template/knr/lib/convertData.ts"
+    },
+    {
+        "fileName": "demo.tsx",
+        "targetPath": "./webapp/src/pages/demo.tsx",
+        "sourcePath": "../../template/knr/pages/demo.tsx"
+    },
+    {
+        "fileName": "_document.tsx",
+        "targetPath": "./webapp/src/pages/_document.tsx",
+        "sourcePath": "../../template/knr/pages/_document.tsx"
+    },
+    {
+        "fileName": "_error.tsx",
+        "targetPath": "./webapp/src/pages/_error.tsx",
+        "sourcePath": "../../template/knr/pages/_error.tsx"
+    },
+    {
+        "fileName": "convertedData.js",
+        "targetPath": "./webapp/test/mockData/convertedData.js",
+        "sourcePath": "../../template/knr/test/mockData/convertedData.js"
+    },
+    {
+        "fileName": "dataToBeConverted.js",
+        "targetPath": "./webapp/test/mockData/dataToBeConverted.js",
+        "sourcePath": "../../template/knr/test/mockData/dataToBeConverted.js"
+    },
+    {
+        "fileName": "convertData.test.js",
+        "targetPath": "./webapp/test/convertData.test.js",
+        "sourcePath": "../../template/knr/test/convertData.test.js"
+    },
+    {
+        "fileName": "shutdown.sh",
+        "targetPath": "./scripts/shutdown.sh",
+        "sourcePath": "../../template/knr/scripts/shutdown.sh"
+    },
+    {
+        "fileName": "startup.sh",
+        "targetPath": "./scripts/startup.sh",
+        "sourcePath": "../../template/knr/scripts/startup.sh"
+    },
+    {
+        "fileName": "controller.js",
+        "targetPath": "./server/controller.js",
+        "sourcePath": "../../template/knr/server/controller.js"
+    },
+    {
+        "fileName": "knr.js",
+        "targetPath": "./server/knr.js",
+        "sourcePath": "../../template/knr/server/knr.js"
+    },
+    {
+        "fileName": "log",
+        "targetPath": "./server/lib/log/index.js",
+        "sourcePath": "../../template/knr/server/lib/log/index.js"
+    },
+    {
+        "fileName": "log_util.js",
+        "targetPath": "./server/lib/log/log_util.js",
+        "sourcePath": "../../template/knr/server/lib/log/log_util.js"
+    }
+]

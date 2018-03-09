@@ -1,0 +1,49 @@
+[
+    {
+        "dependencyName": "ctriputil",
+        "version": "0.0.48"
+    },
+    {
+        "dependencyName": "isomorphic-unfetch",
+        "version": "^2.0.0"
+    },
+    {
+        "dependencyName": "koa",
+        "version": "^2.4.1"
+    },
+    {
+        "dependencyName": "koa-bodyparser"
+    },
+    {
+        "dependencyName": "koa-compress",
+        "version": "^2.0.0"
+    },
+    {
+        "dependencyName": "koa-router",
+        "version": "^7.2.1"
+    },
+    {
+        "dependencyName": "log4js",
+        "version": "^2.5.3"
+    },
+    {
+        "dependencyName": "next",
+        "version": "^5.0.0"
+    },
+    {
+        "dependencyName": "react",
+        "version": "^16.2.0"
+    },
+    {
+        "dependencyName": "react-dom",
+        "version": "^16.2.0"
+    },
+    {
+        "dependencyName": "react-render-html",
+        "version": "^0.6.0"
+    },
+    {
+        "dependencyName": "react-swipeable-views",
+        "version": "^0.12.12"
+    }
+]

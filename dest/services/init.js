@@ -34,8 +34,8 @@ function initProject(projectName, isNpmProject, isKnrProject, isUseTaobaoRegistr
         try {
             yield createProject_1.default(projectName, isExist, configType);
             enterProject(projectName);
-            copyFiles_1.default(configType, isOverride);
             mkdir_1.default(configType, isRedux);
+            copyFiles_1.default(configType, isOverride);
             yield installDependencies_1.default(configType, isOverride);
             yield installDevDependencies_1.default(configType, isOverride);
             writeConfigToPackageJson_1.default(configType, isOverride);
@@ -43,6 +43,7 @@ function initProject(projectName, isNpmProject, isKnrProject, isUseTaobaoRegistr
             Log.fatal('安装成功');
         }
         catch (e) {
+            console.log(e);
             Log.fatal('安装失败');
         }
         finally {

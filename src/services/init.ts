@@ -41,8 +41,8 @@ export default async function initProject(
     try {
         await createProject(projectName, isExist, configType);
         enterProject(projectName);
-        copyFiles(configType, isOverride);
         mkdir(configType, isRedux);
+        copyFiles(configType, isOverride);
         await installDependencies(configType, isOverride);
         await installDevDependencies(configType, isOverride);
         writeConfigToPackageJson(configType, isOverride);
@@ -50,6 +50,7 @@ export default async function initProject(
 
         Log.fatal('安装成功');
     } catch(e) {
+        console.log(e);
         Log.fatal('安装失败');
     } finally {
         if (isUseTaobaoRegistry) {

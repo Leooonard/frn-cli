@@ -1,0 +1,77 @@
+[
+    {
+        "directoryName": "webapp",
+        "directoryBasePath": "./",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "dest",
+        "directoryBasePath": "./webapp",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "src",
+        "directoryBasePath": "./webapp",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "assets",
+        "directoryBasePath": "./webapp/src",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "styles",
+        "directoryBasePath": "./webapp/src/assets",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "commons",
+        "directoryBasePath": "./webapp/src",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "lib",
+        "directoryBasePath": "./webapp/src",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "pages",
+        "directoryBasePath": "./webapp/src",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "test",
+        "directoryBasePath": "./webapp",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "mockData",
+        "directoryBasePath": "./webapp/test",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "logs",
+        "directoryBasePath": "./",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "scripts",
+        "directoryBasePath": "./",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "server",
+        "directoryBasePath": "./",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "lib",
+        "directoryBasePath": "./server",
+        "supportProjectTypeList": []
+    },
+    {
+        "directoryName": "log",
+        "directoryBasePath": "./server/lib",
+        "supportProjectTypeList": []
+    }
+]

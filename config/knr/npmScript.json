@@ -1,0 +1,8 @@
+{
+    "dev_server": "NODE_ENV=development nodemon --inspect index.js",
+    "start_server": "NODE_ENV=production nodemon index.js",
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development node --inspect index.js",
+    "build": "tsc --p tsconfig.prod.json --outDir ./webapp/dest && next build ./webapp/dest/",
+    "test": "jest"
+}
