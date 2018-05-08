@@ -3,8 +3,8 @@
     "tsw": "tsc --w",
     "tsc": "tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts' || true",
-    "tsdiagnosis": "tsc --noEmit || true",
-    "check": "npm run lint && npm run tsdiagnosis",
+    "tsd": "tsc --noEmit || true",
+    "check": "npm run lint && npm run tsd",
     "plato": "es6-plato -r -d plato-report dest",
     "postinstall": "node ./post-install.js"
 }

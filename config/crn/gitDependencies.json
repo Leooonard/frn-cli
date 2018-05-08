@@ -1,6 +1,6 @@
 [
     {
         "dependencyName": "Flight-GeneralFunction",
-        "gitUrl": "git+http://yiyangyao:AAbbcc123.@git.dev.sh.ctripcorp.com/FlightMobile/Flight_GeneralFunction.git#dev"
+        "gitUrl": "git+http://git.dev.sh.ctripcorp.com/FlightMobile/Flight-GeneralFunction.git#dev"
     }
 ]
