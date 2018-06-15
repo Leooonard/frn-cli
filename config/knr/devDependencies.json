@@ -1,0 +1,57 @@
+[
+    {
+        "dependencyName": "@babel/core"
+    }, {
+        "dependencyName": "@types/koa"
+    }, {
+        "dependencyName": "@types/koa-bodyparser"
+    }, {
+        "dependencyName": "@types/koa-compress"
+    }, {
+        "dependencyName": "@types/koa-logger"
+    }, {
+        "dependencyName": "@types/koa-router"
+    }, {
+        "dependencyName": "@types/next"
+    }, {
+        "dependencyName": "@types/node"
+    }, {
+        "dependencyName": "@types/react"
+    }, {
+        "dependencyName": "@zeit/next-css"
+    }, {
+        "dependencyName": "@zeit/next-typescript"
+    }, {
+        "dependencyName": "babel-jest"
+    }, {
+        "dependencyName": "babel-plugin-syntax-async-functions"
+    }, {
+        "dependencyName": "babel-plugin-transform-async-to-generator"
+    }, {
+        "dependencyName": "babel-plugin-transform-class-properties"
+    }, {
+        "dependencyName": "babel-plugin-transform-define"
+    }, {
+        "dependencyName": "babel-plugin-transform-regenerator" 
+    }, {
+        "dependencyName": "babel-preset-es2015"
+    }, {
+        "dependencyName": "babel-preset-es2016"
+    }, {
+        "dependencyName": "babel-preset-es2017"
+    }, {
+        "dependencyName": "babel-preset-latest"
+    }, {
+        "dependencyName": "babel-preset-next-react"
+    }, {
+        "dependencyName": "concurrently"
+    }, {
+        "dependencyName": "jest"
+    }, {
+        "dependencyName": "nodemon"
+    }, {
+        "dependencyName": "ts-jest"
+    }, {
+        "dependencyName": "typescript"
+    }
+]

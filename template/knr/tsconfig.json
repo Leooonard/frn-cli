@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+      // "target": "es2015",
+      // "jsx": "react",
+      "module": "esnext",
+      "target": "esnext",
+      "jsx": "preserve",
+      "sourceMap": false,
+      "experimentalDecorators": true,
+      "noImplicitUseStrict": true,
+      "removeComments": true,
+      "moduleResolution": "node",
+      "allowJs": true,
+      "rootDir": "webapp/src",
+      "outDir": "webapp/dest",
+      "lib": [
+        "es2017",
+        "dom"
+      ],
+      "typeRoots": [
+        "node_modules/@types"
+      ]
+    },
+    "include": [
+      "webapp/src/**/*"
+    ]
+  }
