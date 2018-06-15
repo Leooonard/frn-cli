@@ -16,7 +16,7 @@
         "<rootDir>/node_modules/react"
     ],
     "moduleNameMapper": {
-        "@ctrip/crn": "<rootDir>/node_modules/Flight-GeneralFunction/__mocks__/@ctrip/crn/crn.js"
+        "@ctrip/crn": "<rootDir>/node_modules/Flight-FunctionLibrary/__mocks__/@ctrip/crn/crn.js"
     },
     "collectCoverageFrom": [
         "**/src/**/*.ts"

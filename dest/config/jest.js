@@ -27,7 +27,7 @@
         "moduleNameMapper";
     {
         "@ctrip/crn";
-        "<rootDir>/node_modules/Flight-GeneralFunction/__mocks__/@ctrip/crn/crn.js";
+        "<rootDir>/node_modules/Flight-FunctionLibrary/__mocks__/@ctrip/crn/crn.js";
     }
     "collectCoverageFrom";
     [
